@@ -6,7 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:background="@color/background_green"
-    tools:context=".MainActivity">
+    tools:context=".view.MainActivity">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
