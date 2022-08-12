@@ -1,5 +1,6 @@
 package com.example.dictionaryapp.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.dictionaryapp.model.DictionaryModel
@@ -35,6 +36,7 @@ class MainViewModel: ViewModel() {
                     }
 
                     override fun onError(e: Throwable) {
+                        Log.e("EEEE", e.toString())
                         dictionary_error.value = true
                         dictionary_load.value = true
                     }
