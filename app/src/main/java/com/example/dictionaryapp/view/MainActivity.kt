@@ -5,11 +5,15 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.dictionaryapp.databinding.ActivityMainBinding
 import com.example.dictionaryapp.viewmodel.MainViewModel
 
 class MainActivity : AppCompatActivity() {
+    private lateinit var adapter:RVAdapter
+
     private var _binding : ActivityMainBinding?= null
     private lateinit var binding : ActivityMainBinding
 
@@ -23,6 +27,10 @@ class MainActivity : AppCompatActivity() {
 
         viewmodel.refreshData("bank")
         getLiveData("bank")
+
+        binding.rvWord.setHasFixedSize(true)
+        binding.rvWord.layoutManager = StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
+
     }
 
     private fun getLiveData(word: String) {
@@ -36,9 +44,12 @@ class MainActivity : AppCompatActivity() {
                         val meaning = meanings[j]
                         val definitions = meaning.definitions
 
+                        adapter = RVAdapter(this, definitions)
+                        binding.rvWord.adapter = adapter
+
                         for (k in definitions.indices) {
                             val definition = definitions[k]
-                            Log.e("DATAAA", definition.toString())
+                            // Log.e("DATAAA", definition.toString())
                         }
                     }
                 }
