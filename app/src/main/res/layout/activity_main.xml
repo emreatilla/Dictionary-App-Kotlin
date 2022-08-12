@@ -34,9 +34,8 @@
                 android:id="@+id/rv_word"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="30dp"
-                android:layout_marginEnd="10dp" />
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginTop="30dp" />
 
         </LinearLayout>
 
