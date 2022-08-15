@@ -34,7 +34,7 @@ class RVAdapterMeaning(private val mContext: Context, private val meaningList:Li
         holder.childRV.setHasFixedSize(true)
         holder.childRV.layoutManager = StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
 
-        val adapterDefinition = RVAdapterDefinition(mContext, meaning.definitions)
+        val adapterDefinition = RVAdapterDefinition(mContext, meaning.definitions, meaning.partOfSpeech)
         holder.childRV.adapter = adapterDefinition
     }
 
