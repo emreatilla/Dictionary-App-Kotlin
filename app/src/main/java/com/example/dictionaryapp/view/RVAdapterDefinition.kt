@@ -40,8 +40,8 @@ class RVAdapterDefinition(private val mContext: Context, private val definitionL
         } else {
             holder.textViewExample.visibility = View.GONE
         }
-        holder.textViewDefinition.text = definition.definition
-        holder.textViewDefCount.text = (position + 1).toString() + speech
+        holder.textViewDefinition.text = speech + " " + definition.definition
+        holder.textViewDefCount.text = (position + 1).toString()
     }
 
     override fun getItemCount(): Int {
