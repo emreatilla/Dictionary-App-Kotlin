@@ -8,42 +8,37 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.dictionaryapp.R
-import com.example.dictionaryapp.model.Definition
-import com.example.dictionaryapp.model.DictionaryModelItem
+import com.example.dictionaryapp.model.Meaning
 
-class RVAdapter(private val mContext: Context, private val itemList:List<DictionaryModelItem>) : RecyclerView.Adapter<RVAdapter.CardDesignObjectsHolder>() {
+class RVAdapterMeaning(private val mContext: Context, private val meaningList:List<Meaning>) : RecyclerView.Adapter<RVAdapterMeaning.CardDesignObjectsHolder>() {
 
     inner class CardDesignObjectsHolder(view:View):RecyclerView.ViewHolder(view){
-        var textViewWord:TextView
-        var textViewPhonetic:TextView
+        var textViewSpeech:TextView
         var childRV: RecyclerView
 
         init {
-            textViewWord = view.findViewById(R.id.twWord)
-            textViewPhonetic = view.findViewById(R.id.twPhonetic)
-            childRV = view.findViewById(R.id.rvMeaning)
+            textViewSpeech = view.findViewById(R.id.tvSpeech)
+            childRV = view.findViewById(R.id.rvDefinition)
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CardDesignObjectsHolder {
-        val design = LayoutInflater.from(mContext).inflate(R.layout.word_card, parent, false)
+        val design = LayoutInflater.from(mContext).inflate(R.layout.meaning_card, parent, false)
         return CardDesignObjectsHolder(design)
     }
 
     override fun onBindViewHolder(holder: CardDesignObjectsHolder, position: Int) {
-        val def = itemList[position]
+        val meaning = meaningList[position]
 
-        holder.textViewWord.text = def.word
-        holder.textViewPhonetic.text = def.phonetic
+        holder.textViewSpeech.text = meaning.partOfSpeech
         holder.childRV.setHasFixedSize(true)
         holder.childRV.layoutManager = StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
 
-        val adapterMeaning = RVAdapterMeaning(mContext, def.meanings)
-        holder.childRV.adapter = adapterMeaning
-
+        val adapterDefinition = RVAdapterDefinition(mContext, meaning.definitions)
+        holder.childRV.adapter = adapterDefinition
     }
 
     override fun getItemCount(): Int {
-        return itemList.size
+        return meaningList.size
     }
 }
