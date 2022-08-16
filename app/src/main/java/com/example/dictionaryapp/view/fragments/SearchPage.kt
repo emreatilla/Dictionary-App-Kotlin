@@ -11,13 +11,11 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.dictionaryapp.databinding.FragmentSearchPageBinding
 import com.example.dictionaryapp.view.adapters.RVAdapter
-import com.example.dictionaryapp.view.adapters.RVAdapterMeaning
 import com.example.dictionaryapp.viewmodel.MainViewModel
 
 
 class SearchPage : Fragment() {
     private lateinit var adapter: RVAdapter
-    private lateinit var adapterMeaning: RVAdapterMeaning
 
     private var _binding : FragmentSearchPageBinding ?= null
     private val binding get() = _binding!!
@@ -38,7 +36,7 @@ class SearchPage : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val dicWord = "hello"
+        val dicWord = "coincidence"
         viewmodel.refreshData(dicWord)
         getLiveData()
 

@@ -72,7 +72,7 @@
                     android:layout_height="wrap_content"
                     android:paddingBottom="20dp"
                     android:layout_gravity="center_horizontal"
-                    android:background="@drawable/card_view_bg"
+                    android:background="@drawable/daliy_word_bg"
                     android:orientation="vertical">
 
                     <TextView
