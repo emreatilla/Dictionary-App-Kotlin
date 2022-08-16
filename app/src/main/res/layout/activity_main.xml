@@ -12,7 +12,7 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#40DA73"
+        android:background="@color/background_green"
         app:title="Dictionary"
         app:titleTextColor="@color/white"
         app:menu="@menu/menu_arama"
@@ -34,8 +34,7 @@
                 android:id="@+id/rv_word"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginHorizontal="35dp"
-                android:layout_marginTop="0dp" />
+                android:layout_marginTop="40dp" />
 
         </LinearLayout>
 
