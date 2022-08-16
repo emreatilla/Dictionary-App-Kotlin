@@ -1,4 +1,4 @@
-package com.example.dictionaryapp.view
+package com.example.dictionaryapp.view.adapters
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -25,13 +25,13 @@ class RVAdapterDefinition(private val mContext: Context, private val definitionL
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RVAdapterDefinition.CardDesignObjectsHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CardDesignObjectsHolder {
         val design = LayoutInflater.from(mContext).inflate(R.layout.definition_card, parent, false)
         return CardDesignObjectsHolder(design)
     }
 
     @SuppressLint("SetTextI18n")
-    override fun onBindViewHolder(holder: RVAdapterDefinition.CardDesignObjectsHolder, position: Int) {
+    override fun onBindViewHolder(holder: CardDesignObjectsHolder, position: Int) {
         val definition = definitionList[position]
 
         if (definition.example != null) {
