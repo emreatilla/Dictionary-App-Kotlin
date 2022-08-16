@@ -7,5 +7,6 @@
         <item name="colorOnPrimary">@color/darkGray</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" >@color/background_green</item>
+        <item name="android:navigationBarColor">@color/white</item>
     </style>
 </resources>
