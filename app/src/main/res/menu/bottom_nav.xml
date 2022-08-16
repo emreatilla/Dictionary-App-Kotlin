@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/homePageFragment"
+        android:icon="@drawable/ic_baseline_home_24"
+        android:title=""/>
+    <item
+        android:id="@+id/searchPage"
+        android:icon="@drawable/ic_baseline_search_24"
+        android:title=""/>
+    <item
+        android:id="@+id/favoritesFragment"
+        android:icon="@drawable/ic_bookmark"
+        android:iconTint="#FFEBEDF4"
+        android:title="" />
+    <item
+        android:id="@+id/historyFragment"
+        android:icon="@drawable/ic_baseline_history_24"
+        android:iconTint="#FFEBEDF4"
+        android:title=""/>
+</menu>
