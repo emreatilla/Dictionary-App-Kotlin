@@ -22,6 +22,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/nav_background_curved"
+        app:itemIconTint="@color/bnv_tab_item_foreground"
+        app:itemRippleColor="@null"
         app:menu="@menu/bottom_nav" />
 
 
