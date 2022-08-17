@@ -8,11 +8,19 @@
     <fragment
         android:id="@+id/homePageFragment"
         android:name="com.example.dictionaryapp.view.fragments.HomePageFragment"
-        android:label="HomePageFragment" />
+        android:label="HomePageFragment" >
+        <action
+            android:id="@+id/action_homePageFragment_to_searchPage"
+            app:destination="@id/searchPage" />
+    </fragment>
     <fragment
         android:id="@+id/searchPage"
         android:name="com.example.dictionaryapp.view.fragments.SearchPage"
-        android:label="SearchPage" />
+        android:label="SearchPage" >
+        <action
+            android:id="@+id/action_searchPage_to_homePageFragment"
+            app:destination="@id/homePageFragment" />
+    </fragment>
     <fragment
         android:id="@+id/favoritesFragment"
         android:name="com.example.dictionaryapp.view.fragments.FavoritesFragment"

@@ -8,7 +8,9 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.example.dictionaryapp.R
 import com.example.dictionaryapp.databinding.FragmentSearchPageBinding
 import com.example.dictionaryapp.view.adapters.RVAdapter
 import com.example.dictionaryapp.viewmodel.MainViewModel
@@ -36,12 +38,19 @@ class SearchPage : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val dicWord = "coincidence"
-        viewmodel.refreshData(dicWord)
-        getLiveData()
-
         binding.rvWord.setHasFixedSize(true)
         binding.rvWord.layoutManager = StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
+
+        val dicWord = requireArguments().getString("query")
+        binding.tvWord.text = dicWord
+        if (dicWord != null) {
+            viewmodel.refreshData(dicWord)
+            getLiveData()
+        }
+
+        binding.btnBack.setOnClickListener {
+            findNavController().navigate(R.id.action_searchPage_to_homePageFragment)
+        }
     }
 
     private fun getLiveData() {
