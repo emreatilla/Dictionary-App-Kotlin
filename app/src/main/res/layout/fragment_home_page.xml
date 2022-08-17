@@ -40,12 +40,15 @@
                     android:textSize="12sp"/>
 
                 <SearchView
+                    android:id="@+id/search_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/custominput"
                     android:layout_marginHorizontal="15dp"
                     android:layout_marginTop="20dp"
-                    android:queryHint="Write a word..."/>
+                    android:queryHint="Write a word..."
+                    android:iconifiedByDefault="false"
+                    android:queryBackground="@color/white"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
