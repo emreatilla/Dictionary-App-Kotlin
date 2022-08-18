@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="20dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -36,6 +37,7 @@
         android:layout_height="match_parent"
         android:text="Example: If you want to buy a bicycle, you need to put the money in your piggy bank."
         android:paddingStart="10dp"
-        android:textStyle="italic"/>
+        android:textStyle="italic"
+        android:layout_marginHorizontal="20dp"/>
 
 </LinearLayout>
