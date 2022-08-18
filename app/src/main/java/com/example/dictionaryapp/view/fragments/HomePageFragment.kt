@@ -33,6 +33,13 @@ class HomePageFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         navBar.visibility = View.VISIBLE
 
+        binding.tvFavoritesSeeAll.setOnClickListener {
+            findNavController().navigate(R.id.action_homePageFragment_to_favoritesFragment)
+        }
+
+        binding.tvLastSearchSeeAll.setOnClickListener {
+            findNavController().navigate(R.id.action_homePageFragment_to_historyFragment)
+        }
 
         binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
             override fun onQueryTextSubmit(query: String?): Boolean {

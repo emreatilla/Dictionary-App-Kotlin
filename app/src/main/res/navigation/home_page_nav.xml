@@ -12,6 +12,12 @@
         <action
             android:id="@+id/action_homePageFragment_to_searchPage"
             app:destination="@id/searchPage" />
+        <action
+            android:id="@+id/action_homePageFragment_to_favoritesFragment"
+            app:destination="@id/favoritesFragment" />
+        <action
+            android:id="@+id/action_homePageFragment_to_historyFragment"
+            app:destination="@id/historyFragment" />
     </fragment>
     <fragment
         android:id="@+id/searchPage"

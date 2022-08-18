@@ -234,6 +234,7 @@
                         android:text="Last Searches"/>
 
                     <TextView
+                        android:id="@+id/tvLastSearchSeeAll"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="end"
@@ -261,6 +262,7 @@
                         android:text="Favorites"/>
 
                     <TextView
+                        android:id="@+id/tvFavoritesSeeAll"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="end"
