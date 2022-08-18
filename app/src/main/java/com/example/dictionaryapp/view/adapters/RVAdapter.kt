@@ -40,6 +40,12 @@ class RVAdapter(private val mContext: Context, private val itemList:List<Diction
         if (itemList.size > 1) {
             holder.textViewCount.text = "(${position + 1})"
         }
+
+        if (def.phonetic != null) {
+            holder.textViewPhonetic.text = def.phonetic
+        } else {
+            holder.textViewPhonetic.visibility = View.GONE
+        }
         holder.textViewWord.text = def.word
         holder.textViewPhonetic.text = def.phonetic
         holder.childRV.setHasFixedSize(true)

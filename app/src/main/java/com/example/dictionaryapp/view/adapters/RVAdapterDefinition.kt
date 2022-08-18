@@ -35,12 +35,11 @@ class RVAdapterDefinition(private val mContext: Context, private val definitionL
         val definition = definitionList[position]
 
         if (definition.example != null) {
-            holder.textViewExample.text = definition.example
-            Log.e("???", definition.example)
+            holder.textViewExample.text = "\"" + definition.example + "\""
         } else {
             holder.textViewExample.visibility = View.GONE
         }
-        holder.textViewDefinition.text = speech + " " + definition.definition
+        holder.textViewDefinition.text = speech + ", " + definition.definition
         holder.textViewDefCount.text = (position + 1).toString()
     }
 
