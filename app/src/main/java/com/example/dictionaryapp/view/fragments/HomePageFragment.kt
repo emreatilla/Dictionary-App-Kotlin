@@ -57,11 +57,16 @@ class HomePageFragment : Fragment() {
             navBar.visibility = View.VISIBLE
             binding.llSearch.visibility = View.GONE
             binding.svHome.visibility = View.VISIBLE
+
+            binding.searchView.visibility = View.VISIBLE
+            binding.pBar.visibility = View.GONE
         }
 
         binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
             override fun onQueryTextSubmit(query: String?): Boolean {
                 if (query != null) {
+                    binding.searchView.visibility = View.GONE
+                    binding.pBar.visibility = View.VISIBLE
                     binding.tvWord.text = query
                     viewmodel.refreshData(query)
                     getLiveData()
@@ -108,7 +113,9 @@ class HomePageFragment : Fragment() {
         viewmodel.dictionary_error.observe(viewLifecycleOwner, Observer{ error ->
             error?.takeIf { userVisibleHint }?.getContentIfNotHandled()?.let {
                 if (it)
-                    Toast.makeText(requireContext(), "ERROR", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "ERROR INVALID WORD", Toast.LENGTH_SHORT).show()
+                    binding.searchView.visibility = View.VISIBLE
+                    binding.pBar.visibility = View.GONE
             }
         })
 

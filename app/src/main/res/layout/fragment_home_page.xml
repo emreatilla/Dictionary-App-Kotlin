@@ -235,16 +235,28 @@
                     android:textColor="#B7FFFFFF"
                     android:textSize="12sp"/>
 
-                <SearchView
-                    android:id="@+id/search_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/custominput"
-                    android:layout_marginHorizontal="15dp"
-                    android:layout_marginTop="20dp"
-                    android:queryHint="Write a word..."
-                    android:iconifiedByDefault="false"
-                    android:queryBackground="@color/white"/>
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <SearchView
+                        android:id="@+id/search_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/custominput"
+                        android:layout_marginHorizontal="15dp"
+                        android:layout_marginTop="20dp"
+                        android:queryHint="Write a word..."
+                        android:iconifiedByDefault="false"
+                        android:queryBackground="@color/white"/>
+
+                    <ProgressBar
+                        android:id="@+id/pBar"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:visibility="gone"/>
+
+                </RelativeLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
