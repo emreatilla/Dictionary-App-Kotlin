@@ -2,6 +2,7 @@ package com.example.dictionaryapp.view.adapters
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.text.Html
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -39,7 +40,7 @@ class RVAdapterDefinition(private val mContext: Context, private val definitionL
         } else {
             holder.textViewExample.visibility = View.GONE
         }
-        holder.textViewDefinition.text = speech + ", " + definition.definition
+        holder.textViewDefinition.text = Html.fromHtml("<font color='#960510'>${speech}</font>" + ", " + definition.definition)
         holder.textViewDefCount.text = (position + 1).toString()
     }
 
