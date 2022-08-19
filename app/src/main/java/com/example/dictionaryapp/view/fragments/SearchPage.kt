@@ -1,9 +1,11 @@
 package com.example.dictionaryapp.view.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -77,6 +79,14 @@ class SearchPage : Fragment() {
                             // Log.e("DEFINITION", definition.toString())
                         }
                     }
+                }
+            }
+        })
+
+        viewmodel.dictionary_error.observe(viewLifecycleOwner, Observer{ error ->
+            error?.let {
+                if (error) {
+                    Toast.makeText(requireContext(), "ERROR", Toast.LENGTH_LONG).show()
                 }
             }
         })
