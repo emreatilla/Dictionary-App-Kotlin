@@ -77,7 +77,7 @@ class HomePageFragment : Fragment() {
 
     private fun getLiveData() {
         Log.e("--- ", "duplicate deneme")
-        viewmodel.kelime.observe(viewLifecycleOwner, Observer { data ->
+        viewmodel.dictionary_data.observe(viewLifecycleOwner, Observer { data ->
             // viewmodel.dictionary_data.value = null
             data?.takeIf { userVisibleHint }?.getContentIfNotHandled()?.let {
                 for (i in 0 until it.size) {
