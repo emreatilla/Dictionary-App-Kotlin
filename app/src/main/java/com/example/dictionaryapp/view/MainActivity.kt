@@ -12,7 +12,9 @@ import com.example.dictionaryapp.R
 import com.example.dictionaryapp.databinding.ActivityMainBinding
 import com.example.dictionaryapp.view.adapters.RVAdapter
 import com.example.dictionaryapp.view.adapters.RVAdapterMeaning
+import com.example.dictionaryapp.view.db_history.DatabaseCopyHelper
 import com.example.dictionaryapp.viewmodel.MainViewModel
+import java.lang.Exception
 
 class MainActivity : AppCompatActivity() {
     private var _binding : ActivityMainBinding?= null
@@ -25,11 +27,23 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        dataBaseCopy()
+
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
 
         NavigationUI.setupWithNavController(binding.bottomBar, navHostFragment.navController)
 
 
+    }
+
+    private fun dataBaseCopy(){
+        val copyHelper = DatabaseCopyHelper(this)
+        try {
+            copyHelper.createDataBase()
+            copyHelper.openDataBase()
+        }catch (e: Exception){
+            e.printStackTrace()
+        }
     }
 
 }

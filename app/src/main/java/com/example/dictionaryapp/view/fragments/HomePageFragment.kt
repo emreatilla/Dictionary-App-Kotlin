@@ -18,6 +18,9 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.dictionaryapp.R
 import com.example.dictionaryapp.databinding.FragmentHomePageBinding
 import com.example.dictionaryapp.view.adapters.RVAdapter
+import com.example.dictionaryapp.view.db_history.DatabaseHelper
+import com.example.dictionaryapp.view.db_history.Histories
+import com.example.dictionaryapp.view.db_history.HistoriesDao
 import com.example.dictionaryapp.viewmodel.MainViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -31,6 +34,8 @@ class HomePageFragment : Fragment() {
 
     private val viewmodel: MainViewModel by viewModels()
 
+    private lateinit var dbh: DatabaseHelper
+    private lateinit var hisList: ArrayList<Histories>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,6 +64,13 @@ class HomePageFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val navBar = requireActivity().findViewById<BottomNavigationView>(R.id.bottom_bar)
         super.onViewCreated(view, savedInstanceState)
+
+        dbh = DatabaseHelper(requireContext())
+        // HistoriesDao().addWord(dbh, "\"Hi\"", "\"Hİİ\"", 0)
+        hisList = HistoriesDao().getHistory(dbh)
+
+
+        Log.e("DB", hisList.toString())
 
 
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
@@ -132,6 +144,7 @@ class HomePageFragment : Fragment() {
         viewmodel.dictionary_data.observe(viewLifecycleOwner, Observer { data ->
             // viewmodel.dictionary_data.value = null
             data?.takeIf { userVisibleHint }?.getContentIfNotHandled()?.let {
+
                 for (i in 0 until it.size) {
                     val dictionaryModelItem = it[i]
                     val meanings = dictionaryModelItem.meanings
@@ -178,6 +191,8 @@ class HomePageFragment : Fragment() {
                     binding.rvWord.setHasFixedSize(true)
                     binding.rvWord.layoutManager = StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
                     navBar.visibility = View.GONE
+
+                    // HistoriesDao().addWord(dbh, "\"${word}\"", "\"${def}\"", 0)
                 }
             }
         })
