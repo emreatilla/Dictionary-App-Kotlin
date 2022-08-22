@@ -1,24 +1,26 @@
 package com.example.dictionaryapp.view.fragments
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.RelativeLayout
 import android.widget.SearchView
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.dictionaryapp.R
 import com.example.dictionaryapp.databinding.FragmentHomePageBinding
-import com.example.dictionaryapp.model.DictionaryModel
 import com.example.dictionaryapp.view.adapters.RVAdapter
 import com.example.dictionaryapp.viewmodel.MainViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.bottomsheet.BottomSheetDialog
 
 
 class HomePageFragment : Fragment() {
@@ -36,13 +38,58 @@ class HomePageFragment : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        /*
+        val callback = requireActivity().onBackPressedDispatcher.addCallback(this) {
+            if (binding.llSearch.visibility == View.VISIBLE) {
+                binding.llSearch.visibility = View.GONE
+                binding.svHome.visibility = View.VISIBLE
+            } else {
+                val activity = MainActivity()
+                finishAffinity(activity)
+                exitProcess(0);
+                // Toast.makeText(requireContext(), "back tıklandı", Toast.LENGTH_SHORT).show()
+            }
+        }
+         */
         _binding = FragmentHomePageBinding.inflate(inflater, container, false)
         return binding.root
     }
 
+    @SuppressLint("InflateParams")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val navBar = requireActivity().findViewById<BottomNavigationView>(R.id.bottom_bar)
         super.onViewCreated(view, savedInstanceState)
+
+
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (binding.llSearch.visibility == View.VISIBLE) {
+                    binding.llSearch.visibility = View.GONE
+                    binding.svHome.visibility = View.VISIBLE
+                } else {
+                    /*
+                    AlertDialog.Builder(requireContext()).setMessage("Are you sure ?")
+                        .setPositiveButton("Yes") {_, _ -> activity?.finish()}
+                        .setNegativeButton("No") {_, _ -> }
+                        .show()
+                     */
+                    val dialog = BottomSheetDialog(requireContext(), R.style.BottomSheetDialog) // Style here
+                    dialog.setContentView(R.layout.sample_dialog_one)
+                    val btnExit= dialog.findViewById<RelativeLayout>(R.id.rl_exit)
+                    val btnDelete= dialog.findViewById<RelativeLayout>(R.id.rl_cancel)
+                    btnExit?.setOnClickListener {
+                        activity?.finish()
+                        // Toast.makeText(requireContext(), "Clicked on Exit", Toast.LENGTH_SHORT).show()
+                    }
+                    btnDelete?.setOnClickListener {
+                        dialog.dismiss()
+                        // Toast.makeText(requireContext(), "Clicked on Cancel", Toast.LENGTH_SHORT).show()
+                    }
+                    dialog.show()
+                }
+            }
+
+        })
         navBar.visibility = View.VISIBLE
 
         binding.tvFavoritesSeeAll.setOnClickListener {
