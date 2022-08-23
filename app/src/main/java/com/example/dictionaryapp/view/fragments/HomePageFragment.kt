@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.dictionaryapp.R
 import com.example.dictionaryapp.databinding.FragmentHomePageBinding
 import com.example.dictionaryapp.view.adapters.RVAdapter
+import com.example.dictionaryapp.view.adapters.RVAdapterHistory
 import com.example.dictionaryapp.view.db_history.DatabaseHelper
 import com.example.dictionaryapp.view.db_history.Histories
 import com.example.dictionaryapp.view.db_history.HistoriesDao
@@ -28,6 +29,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 
 class HomePageFragment : Fragment() {
     private lateinit var adapter: RVAdapter
+    private lateinit var adapterHistory: RVAdapterHistory
 
     private var _binding : FragmentHomePageBinding ?= null
     private val binding get() = _binding!!
@@ -36,6 +38,11 @@ class HomePageFragment : Fragment() {
 
     private lateinit var dbh: DatabaseHelper
     private lateinit var hisList: ArrayList<Histories>
+
+    private var word: String = ""
+    private var def: String = ""
+    private var speech: String = ""
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,9 +75,11 @@ class HomePageFragment : Fragment() {
         dbh = DatabaseHelper(requireContext())
         // HistoriesDao().addWord(dbh, "\"Hi\"", "\"Hİİ\"", 0)
         hisList = HistoriesDao().getHistory(dbh)
+        adapterHistory = RVAdapterHistory(requireContext(), hisList.reversed())
+        binding.rvHistory.adapter = adapterHistory
 
 
-        Log.e("DB", hisList.toString())
+        // Log.e("DB", hisList.toString())
 
 
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
@@ -140,11 +149,22 @@ class HomePageFragment : Fragment() {
     }
 
     private fun getLiveData() {
-        Log.e("--- ", "duplicate deneme")
         viewmodel.dictionary_data.observe(viewLifecycleOwner, Observer { data ->
             // viewmodel.dictionary_data.value = null
             data?.takeIf { userVisibleHint }?.getContentIfNotHandled()?.let {
+                word = it[0].word
+                def = it[0].meanings[0].definitions[0].definition
+                speech = it[0].meanings[0].partOfSpeech.take(1)
+                // Log.e("addWord", "word : $word def : $def")
+                try {
+                    HistoriesDao().addWord(dbh, "\"${word}\"", "\"${def}\"", "\"${speech}\"", 0)
+                } catch (e:Exception) {
+                }
+                HistoriesDao().getHistory(dbh)
 
+                hisList = HistoriesDao().getHistory(dbh)
+                adapterHistory = RVAdapterHistory(requireContext(), hisList.reversed())
+                binding.rvHistory.adapter = adapterHistory
                 for (i in 0 until it.size) {
                     val dictionaryModelItem = it[i]
                     val meanings = dictionaryModelItem.meanings
@@ -192,7 +212,9 @@ class HomePageFragment : Fragment() {
                     binding.rvWord.layoutManager = StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
                     navBar.visibility = View.GONE
 
+                    // Log.e("addWord", "word : $word def : $def")
                     // HistoriesDao().addWord(dbh, "\"${word}\"", "\"${def}\"", 0)
+                    // HistoriesDao().getHistory(dbh)
                 }
             }
         })
