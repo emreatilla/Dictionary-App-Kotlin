@@ -1,6 +1,8 @@
 package com.example.dictionaryapp.view.fragments
 
 import android.annotation.SuppressLint
+import android.media.AudioManager
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -25,6 +27,7 @@ import com.example.dictionaryapp.view.db_history.HistoriesDao
 import com.example.dictionaryapp.viewmodel.MainViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import java.io.IOException
 
 
 class HomePageFragment : Fragment() {
@@ -42,6 +45,9 @@ class HomePageFragment : Fragment() {
     private var word: String = ""
     private var def: String = ""
     private var speech: String = ""
+    private var audio: String = ""
+
+    var mediaPlayer : MediaPlayer? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -71,6 +77,19 @@ class HomePageFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val navBar = requireActivity().findViewById<BottomNavigationView>(R.id.bottom_bar)
         super.onViewCreated(view, savedInstanceState)
+
+        binding.cvListen.setOnClickListener {
+            mediaPlayer = MediaPlayer()
+            mediaPlayer!!.setAudioStreamType(AudioManager.STREAM_MUSIC)
+            try {
+                mediaPlayer!!.setDataSource(audio)
+                mediaPlayer!!.prepare()
+                mediaPlayer!!.start()
+            } catch (e : IOException) {
+                e.printStackTrace()
+            }
+
+        }
 
         dbh = DatabaseHelper(requireContext())
         // HistoriesDao().addWord(dbh, "\"Hi\"", "\"Hİİ\"", 0)
@@ -155,6 +174,7 @@ class HomePageFragment : Fragment() {
                 word = it[0].word
                 def = it[0].meanings[0].definitions[0].definition
                 speech = it[0].meanings[0].partOfSpeech.take(1)
+                audio = it[0].phonetics[0].audio
                 // Log.e("addWord", "word : $word def : $def")
                 try {
                     HistoriesDao().addWord(dbh, "\"${word}\"", "\"${def}\"", "\"${speech}\"", 0)
