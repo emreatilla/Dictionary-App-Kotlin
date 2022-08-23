@@ -13,15 +13,15 @@ class HistoriesDao {
 
 
         while(c.moveToNext()) {
-            val history = Histories(c.getInt(c.getColumnIndex("word_id")), c.getString(c.getColumnIndex("word")), c.getString(c.getColumnIndex("definition")), c.getInt(c.getColumnIndex("isFlagged")))
+            val history = Histories(c.getInt(c.getColumnIndex("word_id")), c.getString(c.getColumnIndex("word")), c.getString(c.getColumnIndex("definition")), c.getString(c.getColumnIndex("speech")), c.getInt(c.getColumnIndex("isFlagged")))
             historyList.add(history)
-            Log.e("HIS", history.word_id.toString() + history.word + history.definition + history.isFlagged.toString())
+            Log.e("HIS", " word_id : " + history.word_id.toString() + " word : " + history.word + " definition : " + history.definition + " speech : " + history.speech +" isFlagged : " + history.isFlagged.toString())
         }
         return historyList
     }
 
-    fun addWord(dbh: DatabaseHelper, w: String, def: String, flag: Int) {
+    fun addWord(dbh: DatabaseHelper, w: String, def: String, speech: String, flag: Int) {
         val db = dbh.writableDatabase
-        db.execSQL("INSERT INTO histories (word, definition, isFlagged) VALUES(${w}, ${def}, ${flag})")
+        db.execSQL("INSERT INTO histories (word, definition, speech, isFlagged) VALUES(${w}, ${def}, ${speech}, ${flag})")
     }
 }
