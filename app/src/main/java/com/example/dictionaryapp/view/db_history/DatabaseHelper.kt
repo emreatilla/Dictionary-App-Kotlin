@@ -8,7 +8,7 @@ import android.util.Log
 class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, "history.sqlite", null, 1) {
     override fun onCreate(db: SQLiteDatabase?) {
         Log.e("XX_Create", "create")
-        db?.execSQL("CREATE TABLE IF NOT EXISTS histories (\"word_id\" INTEGER PRIMARY KEY AUTOINCREMENT, \"word\" TEXT, \"definition\" TEXT, \"isFlagged\" INTEGER)")
+        db?.execSQL("CREATE TABLE IF NOT EXISTS histories (\"word_id\" INTEGER PRIMARY KEY AUTOINCREMENT, \"word\" TEXT, \"definition\" TEXT, \"speech\" TEXT, \"isFlagged\" INTEGER, UNIQUE(\"word\"))")
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
