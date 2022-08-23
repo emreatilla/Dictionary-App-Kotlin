@@ -8,7 +8,7 @@ class HistoriesDao {
     fun getHistory(dbh:DatabaseHelper): ArrayList<Histories> {
         val historyList = ArrayList<Histories>()
         val db = dbh.writableDatabase
-        val c = db.rawQuery("SELECT * FROM histories", null)
+        val c = db.rawQuery("SELECT * FROM histories ORDER BY \"word_id\" DESC LIMIT 10", null)
         Log.e("HIS", "Henüz while a girmedi")
 
 
