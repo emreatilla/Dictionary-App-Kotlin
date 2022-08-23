@@ -75,7 +75,7 @@ class HomePageFragment : Fragment() {
         dbh = DatabaseHelper(requireContext())
         // HistoriesDao().addWord(dbh, "\"Hi\"", "\"Hİİ\"", 0)
         hisList = HistoriesDao().getHistory(dbh)
-        adapterHistory = RVAdapterHistory(requireContext(), hisList.reversed())
+        adapterHistory = RVAdapterHistory(requireContext(), hisList)
         binding.rvHistory.adapter = adapterHistory
 
 
@@ -163,7 +163,7 @@ class HomePageFragment : Fragment() {
                 HistoriesDao().getHistory(dbh)
 
                 hisList = HistoriesDao().getHistory(dbh)
-                adapterHistory = RVAdapterHistory(requireContext(), hisList.reversed())
+                adapterHistory = RVAdapterHistory(requireContext(), hisList)
                 binding.rvHistory.adapter = adapterHistory
                 for (i in 0 until it.size) {
                     val dictionaryModelItem = it[i]
