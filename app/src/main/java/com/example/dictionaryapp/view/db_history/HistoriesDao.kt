@@ -24,4 +24,9 @@ class HistoriesDao {
         val db = dbh.writableDatabase
         db.execSQL("INSERT INTO histories (word, definition, speech, isFlagged) VALUES(${w}, ${def}, ${speech}, ${flag})")
     }
+
+    fun deleteWord(dbh: DatabaseHelper, w: String) {
+        val db = dbh.writableDatabase
+        db.execSQL("DELETE FROM histories WHERE word = \"$w\"")
+    }
 }
