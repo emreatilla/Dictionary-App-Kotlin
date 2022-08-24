@@ -1,16 +1,21 @@
 package com.example.dictionaryapp.view.fragments
 
+import android.R
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.dictionaryapp.databinding.FragmentHistoryBinding
 import com.example.dictionaryapp.view.adapters.RVAdapterHistoryFragment
 import com.example.dictionaryapp.view.db_history.DatabaseHelper
 import com.example.dictionaryapp.view.db_history.Histories
 import com.example.dictionaryapp.view.db_history.HistoriesDao
+
 
 class HistoryFragment : Fragment() {
     private lateinit var adapterHistory: RVAdapterHistoryFragment
@@ -37,7 +42,11 @@ class HistoryFragment : Fragment() {
         dbh = DatabaseHelper(requireContext())
         hisList = HistoriesDao().getHistory(dbh)
         // Log.e("HIS FRA", hisList.toString())
-        adapterHistory = RVAdapterHistoryFragment(requireContext(), hisList)
+        adapterHistory = RVAdapterHistoryFragment(requireContext(), hisList) {
+            val bundle = Bundle()
+            bundle.putString("word", it)
+            findNavController().navigate(com.example.dictionaryapp.R.id.action_historyFragment_to_homePageFragment, bundle)
+        }
         binding.rvHistoryPage.adapter = adapterHistory
         binding.rvHistoryPage.setHasFixedSize(true)
         binding.rvHistoryPage.layoutManager = StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
