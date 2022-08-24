@@ -1,17 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:layout_gravity="center"
     android:orientation="vertical"
-    android:layout_marginTop="10dp"
     tools:context=".view.fragments.HistoryFragment">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_history_page"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:listitem="@layout/last_searches_design"/>
+        android:background="@drawable/search_red_bg">
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="History"
+            android:gravity="center"
+            android:textSize="40sp"
+            android:layout_marginBottom="10dp"
+            android:textColor="@color/white"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:background="@color/background_green">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_history_page"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_rv_tail"
+            android:paddingHorizontal="16dp"
+            tools:listitem="@layout/history_design"/>
+    </LinearLayout>
 
 </LinearLayout>
