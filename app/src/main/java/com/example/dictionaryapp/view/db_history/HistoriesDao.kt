@@ -5,7 +5,7 @@ import android.util.Log
 
 class HistoriesDao {
     @SuppressLint("Recycle", "Range")
-    fun getHistory(dbh:DatabaseHelper): ArrayList<Histories> {
+    fun getLastTenHistory(dbh:DatabaseHelper): ArrayList<Histories> {
         val historyList = ArrayList<Histories>()
         val db = dbh.writableDatabase
         val c = db.rawQuery("SELECT * FROM histories ORDER BY \"word_id\" DESC LIMIT 10", null)
@@ -16,6 +16,20 @@ class HistoriesDao {
             val history = Histories(c.getInt(c.getColumnIndex("word_id")), c.getString(c.getColumnIndex("word")), c.getString(c.getColumnIndex("definition")), c.getString(c.getColumnIndex("speech")), c.getInt(c.getColumnIndex("isFlagged")))
             historyList.add(history)
             Log.e("HIS", " word_id : " + history.word_id.toString() + " word : " + history.word + " definition : " + history.definition + " speech : " + history.speech +" isFlagged : " + history.isFlagged.toString())
+        }
+        return historyList
+    }
+
+    @SuppressLint("Recycle", "Range")
+    fun getHistory(dbh:DatabaseHelper): ArrayList<Histories> {
+        val historyList = ArrayList<Histories>()
+        val db = dbh.writableDatabase
+        val c = db.rawQuery("SELECT * FROM histories ORDER BY \"word_id\" DESC", null)
+
+
+        while(c.moveToNext()) {
+            val history = Histories(c.getInt(c.getColumnIndex("word_id")), c.getString(c.getColumnIndex("word")), c.getString(c.getColumnIndex("definition")), c.getString(c.getColumnIndex("speech")), c.getInt(c.getColumnIndex("isFlagged")))
+            historyList.add(history)
         }
         return historyList
     }
