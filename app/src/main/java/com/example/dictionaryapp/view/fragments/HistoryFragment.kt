@@ -1,21 +1,19 @@
 package com.example.dictionaryapp.view.fragments
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import com.example.dictionaryapp.R
 import com.example.dictionaryapp.databinding.FragmentHistoryBinding
-import com.example.dictionaryapp.view.adapters.RVAdapterHistory
+import com.example.dictionaryapp.view.adapters.RVAdapterHistoryFragment
 import com.example.dictionaryapp.view.db_history.DatabaseHelper
 import com.example.dictionaryapp.view.db_history.Histories
 import com.example.dictionaryapp.view.db_history.HistoriesDao
 
 class HistoryFragment : Fragment() {
-    private lateinit var adapterHistory: RVAdapterHistory
+    private lateinit var adapterHistory: RVAdapterHistoryFragment
 
     private var _binding : FragmentHistoryBinding ?= null
     private val binding get() = _binding!!
@@ -39,7 +37,7 @@ class HistoryFragment : Fragment() {
         dbh = DatabaseHelper(requireContext())
         hisList = HistoriesDao().getHistory(dbh)
         // Log.e("HIS FRA", hisList.toString())
-        adapterHistory = RVAdapterHistory(requireContext(), hisList)
+        adapterHistory = RVAdapterHistoryFragment(requireContext(), hisList)
         binding.rvHistoryPage.adapter = adapterHistory
         binding.rvHistoryPage.setHasFixedSize(true)
         binding.rvHistoryPage.layoutManager = StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
