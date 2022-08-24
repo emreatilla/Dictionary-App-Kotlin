@@ -147,6 +147,12 @@ class HomePageFragment : Fragment() {
 
             binding.searchView.visibility = View.VISIBLE
             binding.pBar.visibility = View.GONE
+
+            if (mediaPlayer!!.isPlaying) {
+                mediaPlayer!!.stop()
+                mediaPlayer!!.reset()
+                mediaPlayer!!.release()
+            }
         }
 
         binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
@@ -174,11 +180,29 @@ class HomePageFragment : Fragment() {
                 word = it[0].word
                 def = it[0].meanings[0].definitions[0].definition
                 speech = it[0].meanings[0].partOfSpeech.take(1)
-                audio = it[0].phonetics[0].audio
+
+                // bazen audio başta yada sonda olabiliyor
+                try {
+                    for (i in it[0].phonetics) {
+                        audio = i.audio
+                        if (audio != "") {
+                            break
+                        } else {
+                            continue
+                        }
+                    }
+                    // audio = it[0].phonetics[it[0].phonetics.lastIndex].audio
+                } catch (e:Exception) {
+                    binding.cvListen.visibility = View.GONE
+                }
                 // Log.e("addWord", "word : $word def : $def")
+
+                // History kısmında kelime eğer bulunuyorsa başa ekleme
                 try {
                     HistoriesDao().addWord(dbh, "\"${word}\"", "\"${def}\"", "\"${speech}\"", 0)
                 } catch (e:Exception) {
+                    HistoriesDao().deleteWord(dbh, word)
+                    HistoriesDao().addWord(dbh, "\"${word}\"", "\"${def}\"", "\"${speech}\"", 0)
                 }
                 HistoriesDao().getHistory(dbh)
 
