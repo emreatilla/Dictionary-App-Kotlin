@@ -78,6 +78,16 @@ class HomePageFragment : Fragment() {
         val navBar = requireActivity().findViewById<BottomNavigationView>(R.id.bottom_bar)
         super.onViewCreated(view, savedInstanceState)
 
+        val hayn = arguments?.getString("word")
+        if (hayn != null) {
+            binding.searchView.visibility = View.GONE
+            binding.pBar.visibility = View.VISIBLE
+            binding.tvWord.text = hayn
+            viewmodel.refreshData(hayn)
+            getLiveData()
+        }
+            // arguments?.getString("word")?.let { Log.e("getarg", it) }
+
         binding.cvListen.setOnClickListener {
             mediaPlayer = MediaPlayer()
             mediaPlayer!!.setAudioStreamType(AudioManager.STREAM_MUSIC)
@@ -94,7 +104,13 @@ class HomePageFragment : Fragment() {
         dbh = DatabaseHelper(requireContext())
         // HistoriesDao().addWord(dbh, "\"Hi\"", "\"Hİİ\"", 0)
         hisList = HistoriesDao().getLastTenHistory(dbh)
-        adapterHistory = RVAdapterHistory(requireContext(), hisList)
+        adapterHistory = RVAdapterHistory(requireContext(), hisList) {
+            binding.searchView.visibility = View.GONE
+            binding.pBar.visibility = View.VISIBLE
+            binding.tvWord.text = it
+            viewmodel.refreshData(it)
+            getLiveData()
+        }
         binding.rvHistory.adapter = adapterHistory
 
 
@@ -148,11 +164,13 @@ class HomePageFragment : Fragment() {
             binding.searchView.visibility = View.VISIBLE
             binding.pBar.visibility = View.GONE
 
+            /*
             if (mediaPlayer!!.isPlaying) {
                 mediaPlayer!!.stop()
                 mediaPlayer!!.reset()
                 mediaPlayer!!.release()
             }
+             */
         }
 
         binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
@@ -173,7 +191,7 @@ class HomePageFragment : Fragment() {
         })
     }
 
-    private fun getLiveData() {
+    fun getLiveData() {
         viewmodel.dictionary_data.observe(viewLifecycleOwner, Observer { data ->
             // viewmodel.dictionary_data.value = null
             data?.takeIf { userVisibleHint }?.getContentIfNotHandled()?.let {
@@ -181,19 +199,20 @@ class HomePageFragment : Fragment() {
                 def = it[0].meanings[0].definitions[0].definition
                 speech = it[0].meanings[0].partOfSpeech.take(1)
 
+                binding.cvListen.visibility = View.GONE
+
                 // bazen audio başta yada sonda olabiliyor
-                try {
-                    for (i in it[0].phonetics) {
-                        audio = i.audio
-                        if (audio != "") {
-                            break
-                        } else {
-                            continue
-                        }
+                for (i in it[0].phonetics) {
+                    audio = i.audio
+                    Log.e("audio", audio)
+                    if (audio != "") {
+                        binding.cvListen.visibility = View.VISIBLE
+                        break
+                    } else {
+                        continue
                     }
+
                     // audio = it[0].phonetics[it[0].phonetics.lastIndex].audio
-                } catch (e:Exception) {
-                    binding.cvListen.visibility = View.GONE
                 }
                 // Log.e("addWord", "word : $word def : $def")
 
@@ -207,7 +226,13 @@ class HomePageFragment : Fragment() {
                 HistoriesDao().getLastTenHistory(dbh)
 
                 hisList = HistoriesDao().getLastTenHistory(dbh)
-                adapterHistory = RVAdapterHistory(requireContext(), hisList)
+                adapterHistory = RVAdapterHistory(requireContext(), hisList){
+                    binding.searchView.visibility = View.GONE
+                    binding.pBar.visibility = View.VISIBLE
+                    binding.tvWord.text = it
+                    viewmodel.refreshData(it)
+                    getLiveData()
+                }
                 binding.rvHistory.adapter = adapterHistory
                 for (i in 0 until it.size) {
                     val dictionaryModelItem = it[i]

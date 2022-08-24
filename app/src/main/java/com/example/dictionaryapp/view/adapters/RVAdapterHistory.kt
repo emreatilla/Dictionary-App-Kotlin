@@ -6,25 +6,29 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.dictionaryapp.R
 import com.example.dictionaryapp.view.db_history.Histories
+import com.example.dictionaryapp.view.fragments.HomePageFragment
 
-class RVAdapterHistory (private val mContext: Context, private val historyList:List<Histories>) : RecyclerView.Adapter<RVAdapterHistory.CardDesignObjectsHolder>() {
+class RVAdapterHistory (private val mContext: Context, private val historyList:List<Histories>, val listener: (String) -> Unit) : RecyclerView.Adapter<RVAdapterHistory.CardDesignObjectsHolder>() {
 
     inner class CardDesignObjectsHolder(view: View):RecyclerView.ViewHolder(view) {
         var textViewWord:TextView
         var textViewSpeech:TextView
         var textViewDefinition:TextView
         var imageViewBookmark: ImageView
+        var linearLayoutDesign: LinearLayout
 
         init {
             textViewWord = view.findViewById(R.id.tv_word)
             textViewSpeech = view.findViewById(R.id.tv_speech)
             textViewDefinition = view.findViewById(R.id.tv_definition)
             imageViewBookmark = view.findViewById(R.id.iv_bookmark)
+            linearLayoutDesign = view.findViewById(R.id.ll_last_searches_design)
         }
     }
 
@@ -51,6 +55,8 @@ class RVAdapterHistory (private val mContext: Context, private val historyList:L
         holder.imageViewBookmark.setOnClickListener {
             Toast.makeText(mContext, "${history.word} bookmark clicked", Toast.LENGTH_SHORT).show()
         }
+
+        holder.linearLayoutDesign.setOnClickListener { listener(history.word) }
 
     }
 
