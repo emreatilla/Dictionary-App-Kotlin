@@ -93,7 +93,7 @@ class HomePageFragment : Fragment() {
 
         dbh = DatabaseHelper(requireContext())
         // HistoriesDao().addWord(dbh, "\"Hi\"", "\"Hİİ\"", 0)
-        hisList = HistoriesDao().getHistory(dbh)
+        hisList = HistoriesDao().getLastTenHistory(dbh)
         adapterHistory = RVAdapterHistory(requireContext(), hisList)
         binding.rvHistory.adapter = adapterHistory
 
@@ -204,9 +204,9 @@ class HomePageFragment : Fragment() {
                     HistoriesDao().deleteWord(dbh, word)
                     HistoriesDao().addWord(dbh, "\"${word}\"", "\"${def}\"", "\"${speech}\"", 0)
                 }
-                HistoriesDao().getHistory(dbh)
+                HistoriesDao().getLastTenHistory(dbh)
 
-                hisList = HistoriesDao().getHistory(dbh)
+                hisList = HistoriesDao().getLastTenHistory(dbh)
                 adapterHistory = RVAdapterHistory(requireContext(), hisList)
                 binding.rvHistory.adapter = adapterHistory
                 for (i in 0 until it.size) {
