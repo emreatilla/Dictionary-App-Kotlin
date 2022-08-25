@@ -48,6 +48,18 @@ class HistoriesDao {
         return historyList
     }
 
+    @SuppressLint("Range", "Recycle")
+    fun isFavorite(dbh: DatabaseHelper, w: String): Int{
+        val db = dbh.writableDatabase
+        val c = db.rawQuery("SELECT isFlagged FROM histories WHERE word = \"$w\"", null)
+        var isF = 0
+
+        while (c.moveToNext()){
+            isF = c.getInt(c.getColumnIndex("isFlagged"))
+        }
+        return isF
+    }
+
     fun addToFavorites(dbh: DatabaseHelper, w: String) {
         val db = dbh.writableDatabase
         db.execSQL("UPDATE histories SET isFlagged = 1 WHERE word = \"$w\"")
