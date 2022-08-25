@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.dictionaryapp.R
 import com.example.dictionaryapp.databinding.FragmentHomePageBinding
 import com.example.dictionaryapp.view.adapters.RVAdapter
+import com.example.dictionaryapp.view.adapters.RVAdapterFavorites
 import com.example.dictionaryapp.view.adapters.RVAdapterHistory
 import com.example.dictionaryapp.view.db_history.DatabaseHelper
 import com.example.dictionaryapp.view.db_history.Histories
@@ -33,7 +34,7 @@ import java.io.IOException
 class HomePageFragment : Fragment() {
     private lateinit var adapter: RVAdapter
     private lateinit var adapterHistory: RVAdapterHistory
-    private lateinit var adapterFavorites: RVAdapterHistory
+    private lateinit var adapterFavorites: RVAdapterFavorites
 
     private var _binding : FragmentHomePageBinding ?= null
     private val binding get() = _binding!!
@@ -118,7 +119,7 @@ class HomePageFragment : Fragment() {
 
 
         favList = HistoriesDao().getFavorites(dbh)
-        adapterFavorites = RVAdapterHistory(requireContext(), favList) {
+        adapterFavorites = RVAdapterFavorites(requireContext(), favList) {
             binding.searchView.visibility = View.GONE
             binding.pBar.visibility = View.VISIBLE
             binding.tvWord.text = it
@@ -214,7 +215,7 @@ class HomePageFragment : Fragment() {
     fun getLiveData() {
         viewmodel.dictionary_data.observe(viewLifecycleOwner, Observer { data ->
             // viewmodel.dictionary_data.value = null
-            data?.takeIf { userVisibleHint }?.getContentIfNotHandled()?.let {
+            data?.takeIf { userVisibleHint }?.getContentIfNotHandled()?.let { it ->
                 word = it[0].word
                 def = it[0].meanings[0].definitions[0].definition
                 speech = it[0].meanings[0].partOfSpeech.take(1)
@@ -240,8 +241,9 @@ class HomePageFragment : Fragment() {
                 try {
                     HistoriesDao().addWord(dbh, "\"${word}\"", "\"${def}\"", "\"${speech}\"", 0)
                 } catch (e:Exception) {
+                    val isF = HistoriesDao().isFavorite(dbh, word)
                     HistoriesDao().deleteWord(dbh, word)
-                    HistoriesDao().addWord(dbh, "\"${word}\"", "\"${def}\"", "\"${speech}\"", 0)
+                    HistoriesDao().addWord(dbh, "\"${word}\"", "\"${def}\"", "\"${speech}\"", isF)
                 }
                 HistoriesDao().getLastTenHistory(dbh)
 
@@ -256,7 +258,7 @@ class HomePageFragment : Fragment() {
                 binding.rvHistory.adapter = adapterHistory
 
                 favList = HistoriesDao().getFavorites(dbh)
-                adapterFavorites = RVAdapterHistory(requireContext(), favList) {
+                adapterFavorites = RVAdapterFavorites(requireContext(), favList) {
                     binding.searchView.visibility = View.GONE
                     binding.pBar.visibility = View.VISIBLE
                     binding.tvWord.text = it
