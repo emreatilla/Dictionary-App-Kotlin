@@ -78,6 +78,7 @@ class HomePageFragment : Fragment() {
         val navBar = requireActivity().findViewById<BottomNavigationView>(R.id.bottom_bar)
         super.onViewCreated(view, savedInstanceState)
 
+
         val hayn = arguments?.getString("word")
         if (hayn != null) {
             binding.searchView.visibility = View.GONE
@@ -120,6 +121,7 @@ class HomePageFragment : Fragment() {
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 if (binding.llSearch.visibility == View.VISIBLE) {
+                    navBar.visibility = View.VISIBLE
                     binding.llSearch.visibility = View.GONE
                     binding.svHome.visibility = View.VISIBLE
                 } else {
@@ -189,6 +191,11 @@ class HomePageFragment : Fragment() {
                 return false
             }
         })
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        arguments?.clear()
     }
 
     fun getLiveData() {
