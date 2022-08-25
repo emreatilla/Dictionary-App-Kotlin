@@ -2,6 +2,7 @@ package com.example.dictionaryapp.view.adapters
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,9 +12,13 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.dictionaryapp.R
+import com.example.dictionaryapp.view.db_history.DatabaseHelper
 import com.example.dictionaryapp.view.db_history.Histories
+import com.example.dictionaryapp.view.db_history.HistoriesDao
 
-class RVAdapterHistoryFragment (private val mContext: Context, private val historyList:List<Histories>, val listener: (String) -> Unit) : RecyclerView.Adapter<RVAdapterHistoryFragment.CardDesignObjectsHolder>() {
+class RVAdapterHistoryFragment (private val mContext: Context, private var historyList:List<Histories>, val listener: (String) -> Unit) : RecyclerView.Adapter<RVAdapterHistoryFragment.CardDesignObjectsHolder>() {
+
+    private lateinit var dbh: DatabaseHelper
 
     inner class CardDesignObjectsHolder(view: View):RecyclerView.ViewHolder(view) {
         var textViewWord:TextView
@@ -40,6 +45,12 @@ class RVAdapterHistoryFragment (private val mContext: Context, private val histo
     override fun onBindViewHolder(holder: CardDesignObjectsHolder, position: Int) {
         val history = historyList[position]
 
+        dbh = DatabaseHelper(mContext)
+
+        if (HistoriesDao().isFavorite(dbh, history.word) == 1) {
+            holder.imageViewBookmark.setImageResource(R.drawable.ic_baseline_bookmark_24)
+        }
+
         holder.textViewWord.text = history.word
 
         holder.textViewSpeech.text = "[" + history.speech + "] "
@@ -56,7 +67,16 @@ class RVAdapterHistoryFragment (private val mContext: Context, private val histo
          */
 
         holder.imageViewBookmark.setOnClickListener {
-            Toast.makeText(mContext, "${history.word} bookmark clicked", Toast.LENGTH_SHORT).show()
+            if (HistoriesDao().isFavorite(dbh, history.word) == 1) {
+                HistoriesDao().removeFavorites(dbh, history.word)
+                holder.imageViewBookmark.setImageResource(R.drawable.ic_bookmark)
+                historyList = HistoriesDao().getFavorites(dbh)
+            } else {
+                holder.imageViewBookmark.setImageResource(R.drawable.ic_baseline_bookmark_24)
+                HistoriesDao().addToFavorites(dbh, history.word)
+            }
+            // HistoriesDao().addToFavorites(dbh, history.word)
+            // Toast.makeText(mContext, "${history.word} bookmark clicked", Toast.LENGTH_SHORT).show()
         }
 
         holder.linearLayoutDesign.setOnClickListener { listener(history.word) }
