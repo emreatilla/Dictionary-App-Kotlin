@@ -70,7 +70,7 @@
             android:layout_marginStart="6dp"
             android:background="@android:color/transparent"
             android:src="@drawable/ic_baseline_cancel_24"
-            app:tint="#0022FF"/>
+            app:tint="#415AFB"/>
 
         <TextView
             android:id="@+id/tv_cancel"
@@ -80,7 +80,7 @@
             android:layout_marginStart="6dp"
             android:layout_toRightOf="@+id/imgCancel"
             android:textSize="20sp"
-            android:textColor="#0022FF"
+            android:textColor="#415AFB"
             android:text="Cancel" />
 
     </RelativeLayout>
