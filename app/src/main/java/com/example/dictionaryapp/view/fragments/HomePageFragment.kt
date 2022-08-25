@@ -33,6 +33,7 @@ import java.io.IOException
 class HomePageFragment : Fragment() {
     private lateinit var adapter: RVAdapter
     private lateinit var adapterHistory: RVAdapterHistory
+    private lateinit var adapterFavorites: RVAdapterHistory
 
     private var _binding : FragmentHomePageBinding ?= null
     private val binding get() = _binding!!
@@ -41,6 +42,7 @@ class HomePageFragment : Fragment() {
 
     private lateinit var dbh: DatabaseHelper
     private lateinit var hisList: ArrayList<Histories>
+    private lateinit var favList: ArrayList<Histories>
 
     private var word: String = ""
     private var def: String = ""
@@ -113,6 +115,17 @@ class HomePageFragment : Fragment() {
             getLiveData()
         }
         binding.rvHistory.adapter = adapterHistory
+
+
+        favList = HistoriesDao().getFavorites(dbh)
+        adapterFavorites = RVAdapterHistory(requireContext(), favList) {
+            binding.searchView.visibility = View.GONE
+            binding.pBar.visibility = View.VISIBLE
+            binding.tvWord.text = it
+            viewmodel.refreshData(it)
+            getLiveData()
+        }
+        binding.rvFavorites.adapter = adapterFavorites
 
 
         // Log.e("DB", hisList.toString())
@@ -241,6 +254,18 @@ class HomePageFragment : Fragment() {
                     getLiveData()
                 }
                 binding.rvHistory.adapter = adapterHistory
+
+                favList = HistoriesDao().getFavorites(dbh)
+                adapterFavorites = RVAdapterHistory(requireContext(), favList) {
+                    binding.searchView.visibility = View.GONE
+                    binding.pBar.visibility = View.VISIBLE
+                    binding.tvWord.text = it
+                    viewmodel.refreshData(it)
+                    getLiveData()
+                }
+                binding.rvFavorites.adapter = adapterFavorites
+
+
                 for (i in 0 until it.size) {
                     val dictionaryModelItem = it[i]
                     val meanings = dictionaryModelItem.meanings
