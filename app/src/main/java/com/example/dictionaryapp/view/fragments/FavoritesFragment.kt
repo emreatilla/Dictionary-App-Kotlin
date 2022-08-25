@@ -9,13 +9,13 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.dictionaryapp.R
 import com.example.dictionaryapp.databinding.FragmentFavoritesBinding
-import com.example.dictionaryapp.view.adapters.RVAdapterHistoryFragment
+import com.example.dictionaryapp.view.adapters.RVAdapterFavoritesFragment
 import com.example.dictionaryapp.view.db_history.DatabaseHelper
 import com.example.dictionaryapp.view.db_history.Histories
 import com.example.dictionaryapp.view.db_history.HistoriesDao
 
 class FavoritesFragment : Fragment() {
-    private lateinit var adapterHistory: RVAdapterHistoryFragment
+    private lateinit var adapterHistory: RVAdapterFavoritesFragment
 
     private var _binding : FragmentFavoritesBinding?= null
     private val binding get() = _binding!!
@@ -40,7 +40,7 @@ class FavoritesFragment : Fragment() {
         dbh = DatabaseHelper(requireContext())
         favList = HistoriesDao().getFavorites(dbh)
         // Log.e("HIS FRA", hisList.toString())
-        adapterHistory = RVAdapterHistoryFragment(requireContext(), favList) {
+        adapterHistory = RVAdapterFavoritesFragment(requireContext(), favList) {
             val bundle = Bundle()
             bundle.putString("word", it)
             findNavController().navigate(R.id.action_favoritesFragment_to_homePageFragment, bundle)
