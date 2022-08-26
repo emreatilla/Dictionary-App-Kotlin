@@ -1,6 +1,11 @@
 package com.example.dictionaryapp.view.fragments
 
+import android.R.attr.label
 import android.annotation.SuppressLint
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
+import android.content.Context.CLIPBOARD_SERVICE
 import android.media.AudioManager
 import android.media.MediaPlayer
 import android.os.Bundle
@@ -12,6 +17,7 @@ import android.widget.RelativeLayout
 import android.widget.SearchView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -88,6 +94,13 @@ class HomePageFragment : Fragment() {
         if (hayn != null) {
             setValues(hayn)
             // arguments?.getString("word")?.let { Log.e("getarg", it) }
+        }
+
+        binding.cvCopy.setOnClickListener {
+            val myClipboard = getSystemService(requireContext(), ClipboardManager::class.java) as ClipboardManager
+            val clip: ClipData = ClipData.newPlainText("simple text", word)
+            Toast.makeText(requireContext(), "Word \"$word\" is copied to the clipboard.", Toast.LENGTH_SHORT).show()
+            myClipboard.setPrimaryClip(clip)
         }
 
         binding.cvListen.setOnClickListener {
@@ -203,6 +216,8 @@ class HomePageFragment : Fragment() {
             }
         })
     }
+
+
 
     override fun onDestroyView() {
         super.onDestroyView()
