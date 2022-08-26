@@ -67,6 +67,7 @@ class RVAdapterFavorites (private val mContext: Context, private var historyList
                 holder.imageViewBookmark.setImageResource(R.drawable.ic_bookmark)
                 notifyItemRemoved(position)
                 historyList = HistoriesDao().getFavorites(dbh)
+                notifyItemRangeChanged(position, historyList.size)
                 Log.e("list", historyList.toString())
             } else {
                 Log.e("else", "else")
