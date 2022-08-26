@@ -82,23 +82,13 @@ class HomePageFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         dbh = DatabaseHelper(requireContext())
+        navBar.visibility = View.VISIBLE
 
         val hayn = arguments?.getString("word")
         if (hayn != null) {
-            binding.searchView.visibility = View.GONE
-            binding.pBar.visibility = View.VISIBLE
-            binding.tvWord.text = hayn
-            viewmodel.refreshData(hayn)
-            getLiveData()
-            if (HistoriesDao().isFavorite(dbh, hayn) == 1) {
-                binding.ivBookmarkSearchPage.setImageResource(R.drawable.ic_baseline_bookmark_24)
-                binding.tvSave.text = "Unsave"
-            } else {
-                binding.ivBookmarkSearchPage.setImageResource(R.drawable.ic_bookmark)
-                binding.tvSave.text = "Save"
-            }
-        }
+            setValues(hayn)
             // arguments?.getString("word")?.let { Log.e("getarg", it) }
+        }
 
         binding.cvListen.setOnClickListener {
             mediaPlayer = MediaPlayer()
@@ -115,37 +105,15 @@ class HomePageFragment : Fragment() {
 
         // HistoriesDao().addWord(dbh, "\"Hi\"", "\"Hİİ\"", 0)
         hisList = HistoriesDao().getLastTenHistory(dbh)
-        adapterHistory = RVAdapterHistory(requireContext(), hisList) {
-            binding.searchView.visibility = View.GONE
-            binding.pBar.visibility = View.VISIBLE
-            binding.tvWord.text = it
-            viewmodel.refreshData(it)
-            getLiveData()
-            if (HistoriesDao().isFavorite(dbh, it) == 1) {
-                binding.ivBookmarkSearchPage.setImageResource(R.drawable.ic_baseline_bookmark_24)
-                binding.tvSave.text = "Unsave"
-            } else {
-                binding.ivBookmarkSearchPage.setImageResource(R.drawable.ic_bookmark)
-                binding.tvSave.text = "Save"
-            }
+        adapterHistory = RVAdapterHistory(requireContext(), hisList) { w ->
+            setValues(w)
         }
         binding.rvHistory.adapter = adapterHistory
 
 
         favList = HistoriesDao().getFavorites(dbh)
-        adapterFavorites = RVAdapterFavorites(requireContext(), favList) {
-            binding.searchView.visibility = View.GONE
-            binding.pBar.visibility = View.VISIBLE
-            binding.tvWord.text = it
-            viewmodel.refreshData(it)
-            getLiveData()
-            if (HistoriesDao().isFavorite(dbh, it) == 1) {
-                binding.ivBookmarkSearchPage.setImageResource(R.drawable.ic_baseline_bookmark_24)
-                binding.tvSave.text = "Unsave"
-            } else {
-                binding.ivBookmarkSearchPage.setImageResource(R.drawable.ic_bookmark)
-                binding.tvSave.text = "Save"
-            }
+        adapterFavorites = RVAdapterFavorites(requireContext(), favList) { w ->
+            setValues(w)
         }
         binding.rvFavorites.adapter = adapterFavorites
 
@@ -183,7 +151,6 @@ class HomePageFragment : Fragment() {
             }
 
         })
-        navBar.visibility = View.VISIBLE
 
         binding.tvFavoritesSeeAll.setOnClickListener {
             findNavController().navigate(R.id.action_homePageFragment_to_favoritesFragment)
@@ -214,18 +181,7 @@ class HomePageFragment : Fragment() {
             @SuppressLint("SetTextI18n")
             override fun onQueryTextSubmit(query: String?): Boolean {
                 if (query != null) {
-                    binding.searchView.visibility = View.GONE
-                    binding.pBar.visibility = View.VISIBLE
-                    binding.tvWord.text = query
-                    viewmodel.refreshData(query)
-                    getLiveData()
-                    if (HistoriesDao().isFavorite(dbh, query) == 1) {
-                        binding.ivBookmarkSearchPage.setImageResource(R.drawable.ic_baseline_bookmark_24)
-                        binding.tvSave.text = "Unsave"
-                    } else {
-                        binding.ivBookmarkSearchPage.setImageResource(R.drawable.ic_bookmark)
-                        binding.tvSave.text = "Save"
-                    }
+                    setValues(query)
                 }
                 return false
             }
@@ -239,6 +195,34 @@ class HomePageFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         arguments?.clear()
+    }
+
+    private fun setValues(w: String) {
+        binding.searchView.visibility = View.GONE
+        binding.pBar.visibility = View.VISIBLE
+        binding.tvWord.text = w
+        viewmodel.refreshData(w)
+        getLiveData()
+
+        if (HistoriesDao().isFavorite(dbh, w) == 1) {
+            binding.ivBookmarkSearchPage.setImageResource(R.drawable.ic_baseline_bookmark_24)
+            binding.tvSave.text = "Unsave"
+        } else {
+            binding.ivBookmarkSearchPage.setImageResource(R.drawable.ic_bookmark)
+            binding.tvSave.text = "Save"
+        }
+
+        binding.cvSave.setOnClickListener {
+            if (HistoriesDao().isFavorite(dbh, w) == 1) {
+                HistoriesDao().removeFavorites(dbh, w)
+                binding.ivBookmarkSearchPage.setImageResource(R.drawable.ic_bookmark)
+                binding.tvSave.text = "Save"
+            } else {
+                HistoriesDao().addToFavorites(dbh, w)
+                binding.ivBookmarkSearchPage.setImageResource(R.drawable.ic_baseline_bookmark_24)
+                binding.tvSave.text = "Unsave"
+            }
+        }
     }
 
     @SuppressLint("SetTextI18n")
@@ -278,36 +262,14 @@ class HomePageFragment : Fragment() {
                 HistoriesDao().getLastTenHistory(dbh)
 
                 hisList = HistoriesDao().getLastTenHistory(dbh)
-                adapterHistory = RVAdapterHistory(requireContext(), hisList){
-                    binding.searchView.visibility = View.GONE
-                    binding.pBar.visibility = View.VISIBLE
-                    binding.tvWord.text = it
-                    viewmodel.refreshData(it)
-                    getLiveData()
-                    if (HistoriesDao().isFavorite(dbh, it) == 1) {
-                        binding.ivBookmarkSearchPage.setImageResource(R.drawable.ic_baseline_bookmark_24)
-                        binding.tvSave.text = "Unsave"
-                    } else {
-                        binding.ivBookmarkSearchPage.setImageResource(R.drawable.ic_bookmark)
-                        binding.tvSave.text = "Save"
-                    }
+                adapterHistory = RVAdapterHistory(requireContext(), hisList){ w ->
+                    setValues(w)
                 }
                 binding.rvHistory.adapter = adapterHistory
 
                 favList = HistoriesDao().getFavorites(dbh)
-                adapterFavorites = RVAdapterFavorites(requireContext(), favList) {
-                    binding.searchView.visibility = View.GONE
-                    binding.pBar.visibility = View.VISIBLE
-                    binding.tvWord.text = it
-                    viewmodel.refreshData(it)
-                    getLiveData()
-                    if (HistoriesDao().isFavorite(dbh, it) == 1) {
-                        binding.ivBookmarkSearchPage.setImageResource(R.drawable.ic_baseline_bookmark_24)
-                        binding.tvSave.text = "Unsave"
-                    } else {
-                        binding.ivBookmarkSearchPage.setImageResource(R.drawable.ic_bookmark)
-                        binding.tvSave.text = "Save"
-                    }
+                adapterFavorites = RVAdapterFavorites(requireContext(), favList) { w ->
+                    setValues(w)
                 }
                 binding.rvFavorites.adapter = adapterFavorites
 
