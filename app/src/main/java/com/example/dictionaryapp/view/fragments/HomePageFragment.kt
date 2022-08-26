@@ -111,7 +111,7 @@ class HomePageFragment : Fragment() {
         binding.rvHistory.adapter = adapterHistory
 
 
-        favList = HistoriesDao().getFavorites(dbh)
+        favList = HistoriesDao().getTenFavorites(dbh)
         adapterFavorites = RVAdapterFavorites(requireContext(), favList) { w ->
             setValues(w)
         }
@@ -259,7 +259,7 @@ class HomePageFragment : Fragment() {
                     HistoriesDao().deleteWord(dbh, word)
                     HistoriesDao().addWord(dbh, "\"${word}\"", "\"${def}\"", "\"${speech}\"", isF)
                 }
-                HistoriesDao().getLastTenHistory(dbh)
+                // HistoriesDao().getLastTenHistory(dbh)
 
                 hisList = HistoriesDao().getLastTenHistory(dbh)
                 adapterHistory = RVAdapterHistory(requireContext(), hisList){ w ->
@@ -267,7 +267,7 @@ class HomePageFragment : Fragment() {
                 }
                 binding.rvHistory.adapter = adapterHistory
 
-                favList = HistoriesDao().getFavorites(dbh)
+                favList = HistoriesDao().getTenFavorites(dbh)
                 adapterFavorites = RVAdapterFavorites(requireContext(), favList) { w ->
                     setValues(w)
                 }

@@ -49,6 +49,20 @@ class HistoriesDao {
     }
 
     @SuppressLint("Range", "Recycle")
+    fun getTenFavorites(dbh:DatabaseHelper): ArrayList<Histories> {
+        val historyList = ArrayList<Histories>()
+        val db = dbh.writableDatabase
+        val c = db.rawQuery("SELECT * FROM histories WHERE isFlagged = 1 ORDER BY \"word_id\" DESC LIMIT 10", null)
+
+
+        while(c.moveToNext()) {
+            val history = Histories(c.getInt(c.getColumnIndex("word_id")), c.getString(c.getColumnIndex("word")), c.getString(c.getColumnIndex("definition")), c.getString(c.getColumnIndex("speech")), c.getInt(c.getColumnIndex("isFlagged")))
+            historyList.add(history)
+        }
+        return historyList
+    }
+
+    @SuppressLint("Range", "Recycle")
     fun isFavorite(dbh: DatabaseHelper, w: String): Int{
         val db = dbh.writableDatabase
         val c = db.rawQuery("SELECT isFlagged FROM histories WHERE word = \"$w\"", null)
