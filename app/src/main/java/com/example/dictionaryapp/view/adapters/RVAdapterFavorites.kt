@@ -62,18 +62,12 @@ class RVAdapterFavorites (private val mContext: Context, private var historyList
         }
 
         holder.imageViewBookmark.setOnClickListener {
-            if (HistoriesDao().isFavorite(dbh, history.word) == 1) {
-                HistoriesDao().removeFavorites(dbh, history.word)
-                holder.imageViewBookmark.setImageResource(R.drawable.ic_bookmark)
-                notifyItemRemoved(position)
-                historyList = HistoriesDao().getFavorites(dbh)
-                notifyItemRangeChanged(position, historyList.size)
-                Log.e("list", historyList.toString())
-            } else {
-                Log.e("else", "else")
-                holder.imageViewBookmark.setImageResource(R.drawable.ic_baseline_bookmark_24)
-                HistoriesDao().addToFavorites(dbh, history.word)
-            }
+            HistoriesDao().removeFavorites(dbh, history.word)
+            holder.imageViewBookmark.setImageResource(R.drawable.ic_bookmark)
+            notifyItemRemoved(position)
+            historyList = HistoriesDao().getFavorites(dbh)
+            notifyItemRangeChanged(position, historyList.size)
+            Log.e("list", historyList.toString())
             // HistoriesDao().addToFavorites(dbh, history.word)
             // Toast.makeText(mContext, "${history.word} bookmark clicked", Toast.LENGTH_SHORT).show()
         }
