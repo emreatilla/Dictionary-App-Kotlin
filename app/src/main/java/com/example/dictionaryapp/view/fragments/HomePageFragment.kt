@@ -127,6 +127,12 @@ class HomePageFragment : Fragment() {
                     navBar.visibility = View.VISIBLE
                     binding.llSearch.visibility = View.GONE
                     binding.svHome.visibility = View.VISIBLE
+
+                    val navController = findNavController()
+                    val id = navController.currentDestination?.id
+                    navController.popBackStack(id!!,true)
+                    navController.navigate(id)
+
                 } else {
                     /*
                     AlertDialog.Builder(requireContext()).setMessage("Are you sure ?")
@@ -167,6 +173,12 @@ class HomePageFragment : Fragment() {
 
             binding.searchView.visibility = View.VISIBLE
             binding.pBar.visibility = View.GONE
+
+            val navController = findNavController()
+            val id = navController.currentDestination?.id
+            navController.popBackStack(id!!,true)
+            navController.navigate(id)
+
 
             /*
             if (mediaPlayer!!.isPlaying) {
