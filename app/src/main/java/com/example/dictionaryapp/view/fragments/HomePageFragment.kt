@@ -33,6 +33,9 @@ import com.example.dictionaryapp.viewmodel.MainViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import java.io.IOException
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class HomePageFragment : Fragment() {
@@ -92,6 +95,12 @@ class HomePageFragment : Fragment() {
         if (hayn != null) {
             setValues(hayn)
             // arguments?.getString("word")?.let { Log.e("getarg", it) }
+        }
+
+        binding.tvDateTime.text = getCurrentDate()
+        binding.tvDailyWord.text = getDailyWord()
+        binding.tvDailyWord.setOnClickListener {
+            setValues(getDailyWord())
         }
 
         binding.cvShare.setOnClickListener {
@@ -255,6 +264,20 @@ class HomePageFragment : Fragment() {
                 binding.tvSave.text = "Unsave"
             }
         }
+    }
+
+    fun getDailyWord():String {
+        val wordList = arrayOf("immune", "element", "nervous", "shell", "please", "cheap", "withdrawal", "wheat", "camp", "loop", "promote", "absolute", "garbage", "constitution", "clear", "bacon", "indoor", "pin", "criminal", "mutual", "view", "junior", "satellite", "pawn", "walk", "accident", "or", "employ", "motorcycle", "blonde", "continuation") //explicit type declaration
+        return wordList[getCurrentDay().toInt() - 1]
+    }
+    fun getCurrentDay():String{
+        val sdf = SimpleDateFormat("dd")
+        return sdf.format(Date())
+    }
+
+    fun getCurrentDate():String{
+        val sdf = SimpleDateFormat("yyyy-MM-dd")
+        return sdf.format(Date())
     }
 
     @SuppressLint("SetTextI18n")
