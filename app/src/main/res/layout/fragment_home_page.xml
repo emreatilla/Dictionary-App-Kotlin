@@ -280,14 +280,16 @@
                         android:background="@drawable/recent_icon_bg"/>
 
                     <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_history"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginEnd="5dp"
-                    tools:listitem="@layout/last_searches_design"/>
+                        android:id="@+id/rv_history"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginEnd="5dp"
+                        android:clipToPadding = "false"
+                        android:paddingStart="5dp"
+                        tools:listitem="@layout/last_searches_design"/>
 
                 </LinearLayout>
 
@@ -320,12 +322,14 @@
                     android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/tv_date_time"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="20dp"
                         android:text="16.08.2022"
                         android:gravity="center"/>
                     <TextView
+                        android:id="@+id/tv_daily_word"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="flag"
@@ -341,6 +345,7 @@
                         android:layout_marginVertical="15dp">
 
                         <androidx.cardview.widget.CardView
+                            android:id="@+id/cv_copy_daily_word"
                             android:layout_width="70dp"
                             android:layout_height="70dp"
                             app:cardCornerRadius="15dp"
@@ -369,6 +374,7 @@
                         </androidx.cardview.widget.CardView>
 
                         <androidx.cardview.widget.CardView
+                            android:id="@+id/cv_listen_daily_word"
                             android:layout_width="70dp"
                             android:layout_height="70dp"
                             app:cardCornerRadius="15dp"
@@ -397,6 +403,7 @@
                         </androidx.cardview.widget.CardView>
 
                         <androidx.cardview.widget.CardView
+                            android:id="@+id/cv_save_daily_word"
                             android:layout_width="70dp"
                             android:layout_height="70dp"
                             app:cardCornerRadius="15dp"
@@ -425,6 +432,7 @@
                         </androidx.cardview.widget.CardView>
 
                         <androidx.cardview.widget.CardView
+                            android:id="@+id/share_daily_word"
                             android:layout_width="70dp"
                             android:layout_height="70dp"
                             app:cardCornerRadius="15dp">
