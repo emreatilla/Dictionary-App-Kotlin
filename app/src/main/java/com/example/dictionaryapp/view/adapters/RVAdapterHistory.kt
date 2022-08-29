@@ -2,20 +2,16 @@ package com.example.dictionaryapp.view.adapters
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.dictionaryapp.R
 import com.example.dictionaryapp.view.db_history.DatabaseHelper
 import com.example.dictionaryapp.view.db_history.Histories
-import com.example.dictionaryapp.view.db_history.HistoriesDao
-import com.example.dictionaryapp.view.fragments.HomePageFragment
+
 
 class RVAdapterHistory (private val mContext: Context, private val historyList:List<Histories>, val listener: (String) -> Unit) : RecyclerView.Adapter<RVAdapterHistory.CardDesignObjectsHolder>() {
 

@@ -123,7 +123,7 @@ class HomePageFragment : Fragment() {
         }
 
         // HistoriesDao().addWord(dbh, "\"Hi\"", "\"Hİİ\"", 0)
-        hisList = HistoriesDao().getLastTenHistory(dbh)
+        hisList = HistoriesDao().getHistory(dbh)
         adapterHistory = RVAdapterHistory(requireContext(), hisList) { w ->
             setValues(w)
         }
@@ -181,9 +181,7 @@ class HomePageFragment : Fragment() {
             findNavController().navigate(R.id.action_homePageFragment_to_favoritesFragment)
         }
 
-        binding.tvLastSearchSeeAll.setOnClickListener {
-            findNavController().navigate(R.id.action_homePageFragment_to_historyFragment)
-        }
+
 
         binding.btnBack.setOnClickListener {
             navBar.visibility = View.VISIBLE
@@ -228,6 +226,7 @@ class HomePageFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         arguments?.clear()
+        _binding = null
     }
 
     private fun setValues(w: String) {
@@ -294,7 +293,7 @@ class HomePageFragment : Fragment() {
                 }
                 // HistoriesDao().getLastTenHistory(dbh)
 
-                hisList = HistoriesDao().getLastTenHistory(dbh)
+                hisList = HistoriesDao().getHistory(dbh)
                 adapterHistory = RVAdapterHistory(requireContext(), hisList){ w ->
                     setValues(w)
                 }

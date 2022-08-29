@@ -249,7 +249,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/custominput"
-                        android:layout_marginHorizontal="15dp"
+                        android:layout_marginHorizontal="5dp"
                         android:layout_marginTop="20dp"
                         android:queryHint="Write a word..."
                         android:iconifiedByDefault="false"
@@ -263,6 +263,16 @@
                         android:visibility="gone"/>
 
                 </RelativeLayout>
+
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_history"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    android:orientation="horizontal"
+                    android:layout_margin="5dp"
+                    tools:listitem="@layout/last_searches_design"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -445,35 +455,6 @@
                         android:layout_height="wrap_content"
                         android:textColor="@color/black"
                         android:textStyle="bold"
-                        android:text="Last Searches"/>
-
-                    <TextView
-                        android:id="@+id/tvLastSearchSeeAll"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="end"
-                        android:text="See All"/>
-
-                </LinearLayout>
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_history"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    android:orientation="horizontal"
-                    tools:listitem="@layout/last_searches_design"/>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_margin="15dp">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/black"
-                        android:textStyle="bold"
                         android:text="Favorites"/>
 
                     <TextView
@@ -492,7 +473,7 @@
                     android:layout_height="wrap_content"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     android:orientation="horizontal"
-                    tools:listitem="@layout/last_searches_design"/>
+                    tools:listitem="@layout/favorites_design"/>
 
 
             </LinearLayout>
