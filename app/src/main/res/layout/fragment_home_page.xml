@@ -265,14 +265,31 @@
                 </RelativeLayout>
 
 
-                <androidx.recyclerview.widget.RecyclerView
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_baseline_history_24"
+                        android:layout_marginTop="11dp"
+                        android:layout_marginStart="5dp"
+                        android:paddingEnd="10dp"
+                        android:background="@drawable/recent_icon_bg"/>
+
+                    <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_history"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     android:orientation="horizontal"
-                    android:layout_margin="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="5dp"
                     tools:listitem="@layout/last_searches_design"/>
+
+                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
