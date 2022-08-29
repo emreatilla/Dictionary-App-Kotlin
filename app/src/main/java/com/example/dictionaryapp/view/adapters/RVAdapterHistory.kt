@@ -23,16 +23,10 @@ class RVAdapterHistory (private val mContext: Context, private val historyList:L
 
     inner class CardDesignObjectsHolder(view: View):RecyclerView.ViewHolder(view) {
         var textViewWord:TextView
-        var textViewSpeech:TextView
-        var textViewDefinition:TextView
-        var imageViewBookmark: ImageView
         var linearLayoutDesign: LinearLayout
 
         init {
             textViewWord = view.findViewById(R.id.tv_word)
-            textViewSpeech = view.findViewById(R.id.tv_speech)
-            textViewDefinition = view.findViewById(R.id.tv_definition)
-            imageViewBookmark = view.findViewById(R.id.iv_bookmark)
             linearLayoutDesign = view.findViewById(R.id.ll_last_searches_design)
         }
     }
@@ -49,32 +43,6 @@ class RVAdapterHistory (private val mContext: Context, private val historyList:L
         dbh = DatabaseHelper(mContext)
 
         holder.textViewWord.text = history.word
-
-        holder.textViewSpeech.text = "[" + history.speech + "] "
-
-        if (HistoriesDao().isFavorite(dbh, history.word) == 1) {
-            holder.imageViewBookmark.setImageResource(R.drawable.ic_baseline_bookmark_24)
-        }
-
-        if (history.definition.length > 55) {
-            holder.textViewDefinition.text = history.definition.take(53) + "..."
-        }
-        else {
-            holder.textViewDefinition.text = history.definition
-        }
-
-        holder.imageViewBookmark.setOnClickListener {
-            if (HistoriesDao().isFavorite(dbh, history.word) == 1) {
-                HistoriesDao().removeFavorites(dbh, history.word)
-                holder.imageViewBookmark.setImageResource(R.drawable.ic_bookmark)
-            } else {
-                Log.e("else", "else")
-                holder.imageViewBookmark.setImageResource(R.drawable.ic_baseline_bookmark_24)
-                HistoriesDao().addToFavorites(dbh, history.word)
-            }
-            // HistoriesDao().addToFavorites(dbh, history.word)
-            // Toast.makeText(mContext, "${history.word} bookmark clicked", Toast.LENGTH_SHORT).show()
-        }
 
         holder.linearLayoutDesign.setOnClickListener { listener(history.word) }
 

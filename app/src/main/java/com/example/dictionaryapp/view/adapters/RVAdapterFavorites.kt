@@ -36,7 +36,7 @@ class RVAdapterFavorites (private val mContext: Context, private var historyList
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CardDesignObjectsHolder {
-        val design = LayoutInflater.from(mContext).inflate(R.layout.last_searches_design, parent, false)
+        val design = LayoutInflater.from(mContext).inflate(R.layout.favorites_design, parent, false)
         return CardDesignObjectsHolder(design)
     }
 
