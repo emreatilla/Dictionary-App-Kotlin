@@ -1,11 +1,9 @@
 package com.example.dictionaryapp.view.fragments
 
-import android.R.attr.label
 import android.annotation.SuppressLint
 import android.content.ClipData
 import android.content.ClipboardManager
-import android.content.Context
-import android.content.Context.CLIPBOARD_SERVICE
+import android.content.Intent
 import android.media.AudioManager
 import android.media.MediaPlayer
 import android.os.Bundle
@@ -94,6 +92,14 @@ class HomePageFragment : Fragment() {
         if (hayn != null) {
             setValues(hayn)
             // arguments?.getString("word")?.let { Log.e("getarg", it) }
+        }
+
+        binding.cvShare.setOnClickListener {
+            val intent= Intent()
+            intent.action=Intent.ACTION_SEND
+            intent.putExtra(Intent.EXTRA_TEXT,"Hey Check out this Great app:")
+            intent.type="text/plain"
+            startActivity(Intent.createChooser(intent,"Share To:"))
         }
 
         binding.cvCopy.setOnClickListener {

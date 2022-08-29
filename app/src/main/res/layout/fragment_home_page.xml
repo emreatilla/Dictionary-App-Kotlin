@@ -144,6 +144,7 @@
                 </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView
+                    android:id="@+id/cv_share"
                     android:layout_width="70dp"
                     android:layout_height="70dp"
                     app:cardCornerRadius="15dp"
