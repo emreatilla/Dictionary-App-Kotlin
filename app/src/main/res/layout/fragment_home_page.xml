@@ -415,12 +415,14 @@
                                 android:orientation="vertical">
 
                                 <ImageView
+                                    android:id="@+id/iv_save_daily_word"
                                     android:layout_width="30dp"
                                     android:layout_height="30dp"
                                     android:src="@drawable/ic_bookmark"
                                     android:layout_gravity="center"
                                     app:tint="#B19981" />
                                 <TextView
+                                    android:id="@+id/tv_save_daily_word"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="5dp"
@@ -432,7 +434,7 @@
                         </androidx.cardview.widget.CardView>
 
                         <androidx.cardview.widget.CardView
-                            android:id="@+id/share_daily_word"
+                            android:id="@+id/cv_share_daily_word"
                             android:layout_width="70dp"
                             android:layout_height="70dp"
                             app:cardCornerRadius="15dp">

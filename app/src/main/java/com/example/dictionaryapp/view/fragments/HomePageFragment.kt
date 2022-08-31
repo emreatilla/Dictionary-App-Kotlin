@@ -11,6 +11,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.SearchView
 import android.widget.Toast
@@ -23,6 +24,9 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.dictionaryapp.R
 import com.example.dictionaryapp.databinding.FragmentHomePageBinding
+import com.example.dictionaryapp.model.DictionaryModel
+import com.example.dictionaryapp.model.DictionaryModelItem
+import com.example.dictionaryapp.view.SingleLiveEvent
 import com.example.dictionaryapp.view.adapters.RVAdapter
 import com.example.dictionaryapp.view.adapters.RVAdapterFavorites
 import com.example.dictionaryapp.view.adapters.RVAdapterHistory
@@ -43,7 +47,7 @@ class HomePageFragment : Fragment() {
     private lateinit var adapterHistory: RVAdapterHistory
     private lateinit var adapterFavorites: RVAdapterFavorites
 
-    private var _binding : FragmentHomePageBinding ?= null
+    private var _binding: FragmentHomePageBinding? = null
     private val binding get() = _binding!!
 
     private val viewmodel: MainViewModel by viewModels()
@@ -56,8 +60,9 @@ class HomePageFragment : Fragment() {
     private var def: String = ""
     private var speech: String = ""
     private var audio: String = ""
+    private var dailyAudio = ""
 
-    var mediaPlayer : MediaPlayer? = null
+    var mediaPlayer: MediaPlayer? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -65,7 +70,11 @@ class HomePageFragment : Fragment() {
         setHasOptionsMenu(true)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         /*
         val callback = requireActivity().onBackPressedDispatcher.addCallback(this) {
             if (binding.llSearch.visibility == View.VISIBLE) {
@@ -97,25 +106,60 @@ class HomePageFragment : Fragment() {
             // arguments?.getString("word")?.let { Log.e("getarg", it) }
         }
 
+        Log.e("hayn", binding.tvDailyWord.text.toString())
+        val dailyWord = getDailyWord()
+        Log.e("hayn", "haynnn")
         binding.tvDateTime.text = getCurrentDate()
-        binding.tvDailyWord.text = getDailyWord()
+        binding.tvDailyWord.text = dailyWord
         binding.tvDailyWord.setOnClickListener {
-            setValues(getDailyWord())
+            setValues(dailyWord)
         }
+        binding.cvCopyDailyWord.setOnClickListener {
+            copyClipboard(dailyWord)
+        }
+        binding.cvShareDailyWord.setOnClickListener {
+            shareWord()
+        }
+        if (HistoriesDao().isFavorite(dbh, dailyWord) == 1) {
+            binding.ivSaveDailyWord.setImageResource(R.drawable.ic_baseline_bookmark_24)
+            binding.tvSaveDailyWord.text = "Unsave"
+        } else {
+            binding.ivSaveDailyWord.setImageResource(R.drawable.ic_bookmark)
+            binding.tvSaveDailyWord.text = "Save"
+        }
+        binding.cvSaveDailyWord.setOnClickListener {
+            reloadPage()
+            if (HistoriesDao().isFavorite(dbh, dailyWord) == 1) {
+                HistoriesDao().removeFavorites(dbh, dailyWord)
+                binding.ivSaveDailyWord.setImageResource(R.drawable.ic_bookmark)
+                binding.tvSaveDailyWord.text = "Save"
+            } else {
+                HistoriesDao().addToFavorites(dbh, dailyWord)
+                binding.ivSaveDailyWord.setImageResource(R.drawable.ic_baseline_bookmark_24)
+                binding.tvSaveDailyWord.text = "Unsave"
+            }
+        }
+        /*
+        binding.cvListenDailyWord.setOnClickListener {
+            mediaPlayer = MediaPlayer()
+            mediaPlayer!!.setAudioStreamType(AudioManager.STREAM_MUSIC)
+            try {
+                mediaPlayer!!.setDataSource(dailyAudio)
+                mediaPlayer!!.prepare()
+                mediaPlayer!!.start()
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+        }
+         */
+
 
         binding.cvShare.setOnClickListener {
-            val intent= Intent()
-            intent.action=Intent.ACTION_SEND
-            intent.putExtra(Intent.EXTRA_TEXT,"Hey Check out this Great app:")
-            intent.type="text/plain"
-            startActivity(Intent.createChooser(intent,"Share To:"))
+            shareWord()
         }
 
         binding.cvCopy.setOnClickListener {
-            val myClipboard = getSystemService(requireContext(), ClipboardManager::class.java) as ClipboardManager
-            val clip: ClipData = ClipData.newPlainText("simple text", word)
-            Toast.makeText(requireContext(), "Word \"$word\" is copied to the clipboard.", Toast.LENGTH_SHORT).show()
-            myClipboard.setPrimaryClip(clip)
+            copyClipboard(word)
         }
 
         binding.cvListen.setOnClickListener {
@@ -125,7 +169,7 @@ class HomePageFragment : Fragment() {
                 mediaPlayer!!.setDataSource(audio)
                 mediaPlayer!!.prepare()
                 mediaPlayer!!.start()
-            } catch (e : IOException) {
+            } catch (e: IOException) {
                 e.printStackTrace()
             }
 
@@ -149,45 +193,46 @@ class HomePageFragment : Fragment() {
         // Log.e("DB", hisList.toString())
 
 
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                if (binding.llSearch.visibility == View.VISIBLE) {
-                    navBar.visibility = View.VISIBLE
-                    binding.llSearch.visibility = View.GONE
-                    binding.svHome.visibility = View.VISIBLE
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    if (binding.llSearch.visibility == View.VISIBLE) {
+                        navBar.visibility = View.VISIBLE
+                        binding.llSearch.visibility = View.GONE
+                        binding.svHome.visibility = View.VISIBLE
 
-                    val navController = findNavController()
-                    val id = navController.currentDestination?.id
-                    navController.popBackStack(id!!,true)
-                    navController.navigate(id)
-
-                } else {
-                    /*
-                    AlertDialog.Builder(requireContext()).setMessage("Are you sure ?")
-                        .setPositiveButton("Yes") {_, _ -> activity?.finish()}
-                        .setNegativeButton("No") {_, _ -> }
-                        .show()
-                     */
-                    val dialog = BottomSheetDialog(requireContext(), R.style.BottomSheetDialog) // Style here
-                    dialog.setContentView(R.layout.sample_dialog_one)
-                    val btnExit= dialog.findViewById<RelativeLayout>(R.id.rl_exit)
-                    val btnDelete= dialog.findViewById<RelativeLayout>(R.id.rl_cancel)
-                    btnExit?.setOnClickListener {
-                        activity?.finish()
-                        // Toast.makeText(requireContext(), "Clicked on Exit", Toast.LENGTH_SHORT).show()
+                        reloadPage()
+                    } else {
+                        /*
+                        AlertDialog.Builder(requireContext()).setMessage("Are you sure ?")
+                            .setPositiveButton("Yes") {_, _ -> activity?.finish()}
+                            .setNegativeButton("No") {_, _ -> }
+                            .show()
+                         */
+                        val dialog = BottomSheetDialog(
+                            requireContext(),
+                            R.style.BottomSheetDialog
+                        ) // Style here
+                        dialog.setContentView(R.layout.sample_dialog_one)
+                        val btnExit = dialog.findViewById<RelativeLayout>(R.id.rl_exit)
+                        val btnDelete = dialog.findViewById<RelativeLayout>(R.id.rl_cancel)
+                        btnExit?.setOnClickListener {
+                            activity?.finish()
+                            // Toast.makeText(requireContext(), "Clicked on Exit", Toast.LENGTH_SHORT).show()
+                        }
+                        btnDelete?.setOnClickListener {
+                            dialog.dismiss()
+                            // Toast.makeText(requireContext(), "Clicked on Cancel", Toast.LENGTH_SHORT).show()
+                        }
+                        dialog.show()
                     }
-                    btnDelete?.setOnClickListener {
-                        dialog.dismiss()
-                        // Toast.makeText(requireContext(), "Clicked on Cancel", Toast.LENGTH_SHORT).show()
-                    }
-                    dialog.show()
                 }
-            }
 
-        })
+            })
 
         binding.tvFavoritesSeeAll.setOnClickListener {
-            findNavController().navigate(R.id.action_homePageFragment_to_favoritesFragment)
+            // findNavController().navigate(R.id.action_homePageFragment_to_favoritesFragment)
         }
 
 
@@ -200,10 +245,7 @@ class HomePageFragment : Fragment() {
             binding.searchView.visibility = View.VISIBLE
             binding.pBar.visibility = View.GONE
 
-            val navController = findNavController()
-            val id = navController.currentDestination?.id
-            navController.popBackStack(id!!,true)
-            navController.navigate(id)
+            reloadPage()
 
 
             /*
@@ -215,7 +257,7 @@ class HomePageFragment : Fragment() {
              */
         }
 
-        binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+        binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             @SuppressLint("SetTextI18n")
             override fun onQueryTextSubmit(query: String?): Boolean {
                 if (query != null) {
@@ -229,7 +271,6 @@ class HomePageFragment : Fragment() {
             }
         })
     }
-
 
 
     override fun onDestroyView() {
@@ -266,19 +307,108 @@ class HomePageFragment : Fragment() {
         }
     }
 
-    fun getDailyWord():String {
-        val wordList = arrayOf("immune", "element", "nervous", "shell", "please", "cheap", "withdrawal", "wheat", "camp", "loop", "promote", "absolute", "garbage", "constitution", "clear", "bacon", "indoor", "pin", "criminal", "mutual", "view", "junior", "satellite", "pawn", "walk", "accident", "or", "employ", "motorcycle", "blonde", "continuation") //explicit type declaration
+    fun copyClipboard(word: String) {
+        val myClipboard =
+            getSystemService(requireContext(), ClipboardManager::class.java) as ClipboardManager
+        val clip: ClipData = ClipData.newPlainText("simple text", word)
+        Toast.makeText(
+            requireContext(),
+            "Word \"$word\" is copied to the clipboard.",
+            Toast.LENGTH_SHORT
+        ).show()
+        myClipboard.setPrimaryClip(clip)
+    }
+
+    fun shareWord() {
+        val intent = Intent()
+        intent.action = Intent.ACTION_SEND
+        intent.putExtra(Intent.EXTRA_TEXT, "Hey Check out this Great app:")
+        intent.type = "text/plain"
+        startActivity(Intent.createChooser(intent, "Share To:"))
+    }
+
+    private fun reloadPage() {
+        val navController = findNavController()
+        val id = navController.currentDestination?.id
+        navController.popBackStack(id!!, true)
+        navController.navigate(id)
+    }
+
+
+    private fun getDailyWord(): String {
+        val wordList = arrayOf(
+            "immune",
+            "element",
+            "nervous",
+            "shell",
+            "please",
+            "cheap",
+            "withdrawal",
+            "wheat",
+            "camp",
+            "loop",
+            "promote",
+            "absolute",
+            "garbage",
+            "constitution",
+            "clear",
+            "bacon",
+            "indoor",
+            "pin",
+            "criminal",
+            "mutual",
+            "view",
+            "junior",
+            "satellite",
+            "pawn",
+            "walk",
+            "accident",
+            "or",
+            "employ",
+            "motorcycle",
+            "blonde",
+            "continuation"
+        ) //explicit type declaration
         return wordList[getCurrentDay().toInt() - 1]
     }
-    fun getCurrentDay():String{
+
+    @SuppressLint("SimpleDateFormat")
+    fun getCurrentDay(): String {
         val sdf = SimpleDateFormat("dd")
         return sdf.format(Date())
     }
 
-    fun getCurrentDate():String{
-        val sdf = SimpleDateFormat("yyyy-MM-dd")
+    @SuppressLint("SimpleDateFormat")
+    fun getCurrentDate(): String {
+        val sdf = SimpleDateFormat("MM-dd-yyyy")
         return sdf.format(Date())
     }
+
+    /*
+    @SuppressLint("SetTextI18n")
+    fun getAudio() {
+        viewmodel.dictionary_data.observe(viewLifecycleOwner, Observer { data ->
+            // viewmodel.dictionary_data.value = null
+            data?.takeIf { userVisibleHint }?.getContentIfNotHandled()?.let { it ->
+                binding.cvListenDailyWord.visibility = View.GONE
+
+                // bazen audio başta yada sonda olabiliyor
+                for (i in it[0].phonetics) {
+                    dailyAudio = i.audio
+                    Log.e("audio", dailyAudio)
+                    if (dailyAudio != "") {
+                        binding.cvListenDailyWord.visibility = View.VISIBLE
+                        break
+                    } else {
+                        continue
+                    }
+
+                    // audio = it[0].phonetics[it[0].phonetics.lastIndex].audio
+                }
+            }
+        })
+    }
+     */
 
     @SuppressLint("SetTextI18n")
     fun getLiveData() {
@@ -309,7 +439,7 @@ class HomePageFragment : Fragment() {
                 // History kısmında kelime eğer bulunuyorsa başa ekleme
                 try {
                     HistoriesDao().addWord(dbh, "\"${word}\"", "\"${def}\"", "\"${speech}\"", 0)
-                } catch (e:Exception) {
+                } catch (e: Exception) {
                     val isF = HistoriesDao().isFavorite(dbh, word)
                     HistoriesDao().deleteWord(dbh, word)
                     HistoriesDao().addWord(dbh, "\"${word}\"", "\"${def}\"", "\"${speech}\"", isF)
@@ -317,7 +447,7 @@ class HomePageFragment : Fragment() {
                 // HistoriesDao().getLastTenHistory(dbh)
 
                 hisList = HistoriesDao().getHistory(dbh)
-                adapterHistory = RVAdapterHistory(requireContext(), hisList){ w ->
+                adapterHistory = RVAdapterHistory(requireContext(), hisList) { w ->
                     setValues(w)
                 }
                 binding.rvHistory.adapter = adapterHistory
@@ -354,26 +484,29 @@ class HomePageFragment : Fragment() {
             }
         })
 
-        viewmodel.dictionary_error.observe(viewLifecycleOwner, Observer{ error ->
+        viewmodel.dictionary_error.observe(viewLifecycleOwner, Observer { error ->
             error?.takeIf { userVisibleHint }?.getContentIfNotHandled()?.let {
                 if (it)
-                    Toast.makeText(requireContext(), "ERROR INVALID WORD", Toast.LENGTH_SHORT).show()
-                    binding.searchView.visibility = View.VISIBLE
-                    binding.pBar.visibility = View.GONE
+                    Toast.makeText(requireContext(), "ERROR INVALID WORD", Toast.LENGTH_SHORT)
+                        .show()
+                binding.searchView.visibility = View.VISIBLE
+                binding.pBar.visibility = View.GONE
             }
         })
 
-        viewmodel.dictionary_load.observe(viewLifecycleOwner, Observer{ load ->
+        viewmodel.dictionary_load.observe(viewLifecycleOwner, Observer { load ->
             load?.takeIf { userVisibleHint }?.getContentIfNotHandled()?.let {
                 if (it) {
                     binding.svHome.visibility = View.VISIBLE
                     binding.llSearch.visibility = View.GONE
                 } else {
-                    val navBar = requireActivity().findViewById<BottomNavigationView>(R.id.bottom_bar)
+                    val navBar =
+                        requireActivity().findViewById<BottomNavigationView>(R.id.bottom_bar)
                     binding.svHome.visibility = View.GONE
                     binding.llSearch.visibility = View.VISIBLE
                     binding.rvWord.setHasFixedSize(true)
-                    binding.rvWord.layoutManager = StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
+                    binding.rvWord.layoutManager =
+                        StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
                     navBar.visibility = View.GONE
 
                     // Log.e("addWord", "word : $word def : $def")
