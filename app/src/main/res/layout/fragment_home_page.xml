@@ -279,17 +279,31 @@
                         android:paddingEnd="10dp"
                         android:background="@drawable/recent_icon_bg"/>
 
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rv_history"
+                    <RelativeLayout
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                        android:orientation="horizontal"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginEnd="5dp"
-                        android:clipToPadding = "false"
-                        android:paddingStart="5dp"
-                        tools:listitem="@layout/last_searches_design"/>
+                        android:layout_height="wrap_content">
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rv_history"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                            android:orientation="horizontal"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginEnd="5dp"
+                            android:clipToPadding = "false"
+                            android:paddingStart="5dp"
+                            tools:listitem="@layout/last_searches_design"/>
+
+                        <TextView
+                            android:id="@+id/tv_blank_history"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="13dp"
+                            android:paddingStart="5dp"
+                            android:text="There is no previous searches yet ..."
+                            android:textColor="#B7FFFFFF"
+                            android:textStyle="italic" />
+                    </RelativeLayout>
 
                 </LinearLayout>
 
@@ -494,13 +508,28 @@
 
                 </LinearLayout>
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_favorites"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    android:orientation="horizontal"
-                    tools:listitem="@layout/favorites_design"/>
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_favorites"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        tools:listitem="@layout/favorites_design" />
+
+                    <TextView
+                        android:id="@+id/tv_blank_favorites"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="25dp"
+                        android:text="There are no words saved yet ..."
+                        android:textSize="18sp"
+                        android:textStyle="italic" />
+                </RelativeLayout>
+
 
 
             </LinearLayout>

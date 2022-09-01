@@ -189,6 +189,13 @@ class HomePageFragment : Fragment() {
         }
         binding.rvFavorites.adapter = adapterFavorites
 
+        if (adapterHistory.itemCount != 0) {
+            binding.tvBlankHistory.visibility = View.GONE
+        }
+        if (adapterFavorites.itemCount != 0) {
+            binding.tvBlankFavorites.visibility = View.GONE
+        }
+
 
         // Log.e("DB", hisList.toString())
 
