@@ -48,5 +48,9 @@ class FavoritesFragment : Fragment() {
         binding.rvFavoritesPage.adapter = adapterHistory
         binding.rvFavoritesPage.setHasFixedSize(true)
         binding.rvFavoritesPage.layoutManager = StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
+
+        if (adapterHistory.itemCount != 0) {
+            binding.tvBlankHistory.visibility = View.GONE
+        }
     }
 }

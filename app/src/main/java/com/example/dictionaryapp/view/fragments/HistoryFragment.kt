@@ -48,5 +48,9 @@ class HistoryFragment : Fragment() {
         binding.rvHistoryPage.adapter = adapterHistory
         binding.rvHistoryPage.setHasFixedSize(true)
         binding.rvHistoryPage.layoutManager = StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
+
+        if (adapterHistory.itemCount != 0) {
+            binding.tvBlankHistory.visibility = View.GONE
+        }
     }
 }

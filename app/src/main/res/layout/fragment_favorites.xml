@@ -37,4 +37,13 @@
             tools:listitem="@layout/history_design"/>
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/tv_blank_history"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="There are no words saved yet ..."
+        android:textStyle="italic"
+        android:layout_gravity="center"
+        android:gravity="center"/>
+
 </LinearLayout>

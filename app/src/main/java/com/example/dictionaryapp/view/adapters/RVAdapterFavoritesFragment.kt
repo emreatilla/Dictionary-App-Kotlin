@@ -10,6 +10,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.dictionaryapp.R
 import com.example.dictionaryapp.view.db_history.DatabaseHelper
@@ -75,6 +76,8 @@ class RVAdapterFavoritesFragment (private val mContext: Context, private var his
             Log.e("list", historyList.toString())
             // HistoriesDao().addToFavorites(dbh, history.word)
             // Toast.makeText(mContext, "${history.word} bookmark clicked", Toast.LENGTH_SHORT).show()
+            it.findNavController().popBackStack(R.id.favoritesFragment,true)
+            it.findNavController().navigate(R.id.favoritesFragment)
         }
 
         holder.linearLayoutDesign.setOnClickListener { listener(history.word) }
