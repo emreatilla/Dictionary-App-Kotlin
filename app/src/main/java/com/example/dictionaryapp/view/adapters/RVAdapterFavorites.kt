@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.dictionaryapp.R
 import com.example.dictionaryapp.view.db_history.DatabaseHelper
@@ -70,6 +71,9 @@ class RVAdapterFavorites (private val mContext: Context, private var historyList
             Log.e("list", historyList.toString())
             // HistoriesDao().addToFavorites(dbh, history.word)
             // Toast.makeText(mContext, "${history.word} bookmark clicked", Toast.LENGTH_SHORT).show()
+            // This method refreshes the fragment
+            it.findNavController().popBackStack(R.id.homePageFragment,true)
+            it.findNavController().navigate(R.id.homePageFragment)
         }
 
         holder.linearLayoutDesign.setOnClickListener { listener(history.word) }

@@ -335,10 +335,9 @@ class HomePageFragment : Fragment() {
     }
 
     private fun reloadPage() {
-        val navController = findNavController()
-        val id = navController.currentDestination?.id
-        navController.popBackStack(id!!, true)
-        navController.navigate(id)
+        val id = findNavController().currentDestination?.id
+        findNavController().popBackStack(id!!, true)
+        findNavController().navigate(id)
     }
 
 
