@@ -10,9 +10,11 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.dictionaryapp.R
 import com.example.dictionaryapp.databinding.FragmentFavoritesBinding
 import com.example.dictionaryapp.view.adapters.RVAdapterFavoritesFragment
+import com.example.dictionaryapp.view.db_favorites.DatabaseHelperFavorites
+import com.example.dictionaryapp.view.db_favorites.Favorites
+import com.example.dictionaryapp.view.db_favorites.FavoritesDao
 import com.example.dictionaryapp.view.db_history.DatabaseHelper
 import com.example.dictionaryapp.view.db_history.Histories
-import com.example.dictionaryapp.view.db_history.HistoriesDao
 
 class FavoritesFragment : Fragment() {
     private lateinit var adapterHistory: RVAdapterFavoritesFragment
@@ -21,7 +23,9 @@ class FavoritesFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var dbh: DatabaseHelper
+    private lateinit var dbhf: DatabaseHelperFavorites
     private lateinit var favList: ArrayList<Histories>
+    private lateinit var favFavList: ArrayList<Favorites>
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,9 +42,11 @@ class FavoritesFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         dbh = DatabaseHelper(requireContext())
-        favList = HistoriesDao().getFavorites(dbh)
+        dbhf = DatabaseHelperFavorites(requireContext())
+        // favList = HistoriesDao().getFavorites(dbh)
+        favFavList = FavoritesDao().getFavorites(dbhf)
         // Log.e("HIS FRA", hisList.toString())
-        adapterHistory = RVAdapterFavoritesFragment(requireContext(), favList) {
+        adapterHistory = RVAdapterFavoritesFragment(requireContext(), favFavList) {
             val bundle = Bundle()
             bundle.putString("word", it)
             findNavController().navigate(R.id.action_favoritesFragment_to_homePageFragment, bundle)

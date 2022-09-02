@@ -30,6 +30,9 @@ import com.example.dictionaryapp.view.SingleLiveEvent
 import com.example.dictionaryapp.view.adapters.RVAdapter
 import com.example.dictionaryapp.view.adapters.RVAdapterFavorites
 import com.example.dictionaryapp.view.adapters.RVAdapterHistory
+import com.example.dictionaryapp.view.db_favorites.DatabaseHelperFavorites
+import com.example.dictionaryapp.view.db_favorites.Favorites
+import com.example.dictionaryapp.view.db_favorites.FavoritesDao
 import com.example.dictionaryapp.view.db_history.DatabaseHelper
 import com.example.dictionaryapp.view.db_history.Histories
 import com.example.dictionaryapp.view.db_history.HistoriesDao
@@ -53,8 +56,10 @@ class HomePageFragment : Fragment() {
     private val viewmodel: MainViewModel by viewModels()
 
     private lateinit var dbh: DatabaseHelper
+    private lateinit var dbhf: DatabaseHelperFavorites
     private lateinit var hisList: ArrayList<Histories>
-    private lateinit var favList: ArrayList<Histories>
+    // private lateinit var favList: ArrayList<Histories>
+    private lateinit var favFavList: ArrayList<Favorites>
 
     private var word: String = ""
     private var def: String = ""
@@ -98,6 +103,7 @@ class HomePageFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         dbh = DatabaseHelper(requireContext())
+        dbhf = DatabaseHelperFavorites(requireContext())
         navBar.visibility = View.VISIBLE
 
         val hayn = arguments?.getString("word")
@@ -131,10 +137,12 @@ class HomePageFragment : Fragment() {
             reloadPage()
             if (HistoriesDao().isFavorite(dbh, dailyWord) == 1) {
                 HistoriesDao().removeFavorites(dbh, dailyWord)
+                FavoritesDao().deleteFavorites(dbhf, dailyWord)
                 binding.ivSaveDailyWord.setImageResource(R.drawable.ic_bookmark)
                 binding.tvSaveDailyWord.text = "Save"
             } else {
                 HistoriesDao().addToFavorites(dbh, dailyWord)
+                FavoritesDao().addFavorites(dbhf, dbh, dailyWord)
                 binding.ivSaveDailyWord.setImageResource(R.drawable.ic_baseline_bookmark_24)
                 binding.tvSaveDailyWord.text = "Unsave"
             }
@@ -183,8 +191,9 @@ class HomePageFragment : Fragment() {
         binding.rvHistory.adapter = adapterHistory
 
 
-        favList = HistoriesDao().getTenFavorites(dbh)
-        adapterFavorites = RVAdapterFavorites(requireContext(), favList) { w ->
+        // favList = HistoriesDao().getTenFavorites(dbh)
+        favFavList = FavoritesDao().getTenFavorites(dbhf)
+        adapterFavorites = RVAdapterFavorites(requireContext(), favFavList) { w ->
             setValues(w)
         }
         binding.rvFavorites.adapter = adapterFavorites
@@ -304,10 +313,12 @@ class HomePageFragment : Fragment() {
         binding.cvSave.setOnClickListener {
             if (HistoriesDao().isFavorite(dbh, w) == 1) {
                 HistoriesDao().removeFavorites(dbh, w)
+                FavoritesDao().deleteFavorites(dbhf, w)
                 binding.ivBookmarkSearchPage.setImageResource(R.drawable.ic_bookmark)
                 binding.tvSave.text = "Save"
             } else {
                 HistoriesDao().addToFavorites(dbh, w)
+                FavoritesDao().addFavorites(dbhf, dbh, w)
                 binding.ivBookmarkSearchPage.setImageResource(R.drawable.ic_baseline_bookmark_24)
                 binding.tvSave.text = "Unsave"
             }
@@ -458,8 +469,9 @@ class HomePageFragment : Fragment() {
                 }
                 binding.rvHistory.adapter = adapterHistory
 
-                favList = HistoriesDao().getTenFavorites(dbh)
-                adapterFavorites = RVAdapterFavorites(requireContext(), favList) { w ->
+                // favList = HistoriesDao().getTenFavorites(dbh)
+                favFavList = FavoritesDao().getTenFavorites(dbhf)
+                adapterFavorites = RVAdapterFavorites(requireContext(), favFavList) { w ->
                     setValues(w)
                 }
                 binding.rvFavorites.adapter = adapterFavorites

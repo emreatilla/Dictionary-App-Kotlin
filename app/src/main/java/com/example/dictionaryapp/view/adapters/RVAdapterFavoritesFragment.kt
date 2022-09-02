@@ -13,13 +13,17 @@ import android.widget.Toast
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.dictionaryapp.R
+import com.example.dictionaryapp.view.db_favorites.DatabaseHelperFavorites
+import com.example.dictionaryapp.view.db_favorites.Favorites
+import com.example.dictionaryapp.view.db_favorites.FavoritesDao
 import com.example.dictionaryapp.view.db_history.DatabaseHelper
 import com.example.dictionaryapp.view.db_history.Histories
 import com.example.dictionaryapp.view.db_history.HistoriesDao
 
-class RVAdapterFavoritesFragment (private val mContext: Context, private var historyList:List<Histories>, val listener: (String) -> Unit) : RecyclerView.Adapter<RVAdapterFavoritesFragment.CardDesignObjectsHolder>() {
+class RVAdapterFavoritesFragment (private val mContext: Context, private var historyList:List<Favorites>, val listener: (String) -> Unit) : RecyclerView.Adapter<RVAdapterFavoritesFragment.CardDesignObjectsHolder>() {
 
     private lateinit var dbh: DatabaseHelper
+    private lateinit var dbhf: DatabaseHelperFavorites
 
     inner class CardDesignObjectsHolder(view: View):RecyclerView.ViewHolder(view) {
         var textViewWord:TextView
@@ -47,6 +51,7 @@ class RVAdapterFavoritesFragment (private val mContext: Context, private var his
         val history = historyList[position]
 
         dbh = DatabaseHelper(mContext)
+        dbhf = DatabaseHelperFavorites(mContext)
 
         if (HistoriesDao().isFavorite(dbh, history.word) == 1) {
             holder.imageViewBookmark.setImageResource(R.drawable.ic_baseline_bookmark_24)
@@ -69,9 +74,10 @@ class RVAdapterFavoritesFragment (private val mContext: Context, private var his
 
         holder.imageViewBookmark.setOnClickListener {
             HistoriesDao().removeFavorites(dbh, history.word)
+            FavoritesDao().deleteFavorites(dbhf, history.word)
             holder.imageViewBookmark.setImageResource(R.drawable.ic_bookmark)
             notifyItemRemoved(position)
-            historyList = HistoriesDao().getFavorites(dbh)
+            historyList = FavoritesDao().getFavorites(dbhf)
             notifyItemRangeChanged(position, historyList.size)
             Log.e("list", historyList.toString())
             // HistoriesDao().addToFavorites(dbh, history.word)

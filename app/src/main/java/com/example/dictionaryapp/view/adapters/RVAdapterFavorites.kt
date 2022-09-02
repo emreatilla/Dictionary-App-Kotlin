@@ -12,13 +12,17 @@ import android.widget.TextView
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.dictionaryapp.R
+import com.example.dictionaryapp.view.db_favorites.DatabaseHelperFavorites
+import com.example.dictionaryapp.view.db_favorites.Favorites
+import com.example.dictionaryapp.view.db_favorites.FavoritesDao
 import com.example.dictionaryapp.view.db_history.DatabaseHelper
 import com.example.dictionaryapp.view.db_history.Histories
 import com.example.dictionaryapp.view.db_history.HistoriesDao
 
-class RVAdapterFavorites (private val mContext: Context, private var historyList:List<Histories>, val listener: (String) -> Unit) : RecyclerView.Adapter<RVAdapterFavorites.CardDesignObjectsHolder>() {
+class RVAdapterFavorites (private val mContext: Context, private var favList:List<Favorites>, val listener: (String) -> Unit) : RecyclerView.Adapter<RVAdapterFavorites.CardDesignObjectsHolder>() {
 
     private lateinit var dbh: DatabaseHelper
+    private lateinit var dbhf: DatabaseHelperFavorites
 
     inner class CardDesignObjectsHolder(view: View):RecyclerView.ViewHolder(view) {
         var textViewWord:TextView
@@ -43,9 +47,10 @@ class RVAdapterFavorites (private val mContext: Context, private var historyList
 
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: CardDesignObjectsHolder, position: Int) {
-        val history = historyList[position]
+        val history = favList[position]
 
         dbh = DatabaseHelper(mContext)
+        dbhf = DatabaseHelperFavorites(mContext)
 
         holder.textViewWord.text = history.word
 
@@ -64,11 +69,12 @@ class RVAdapterFavorites (private val mContext: Context, private var historyList
 
         holder.imageViewBookmark.setOnClickListener {
             HistoriesDao().removeFavorites(dbh, history.word)
+            FavoritesDao().deleteFavorites(dbhf, history.word)
             holder.imageViewBookmark.setImageResource(R.drawable.ic_bookmark)
             notifyItemRemoved(position)
-            historyList = HistoriesDao().getFavorites(dbh)
-            notifyItemRangeChanged(position, historyList.size)
-            Log.e("list", historyList.toString())
+            favList = FavoritesDao().getFavorites(dbhf)
+            notifyItemRangeChanged(position, favList.size)
+            Log.e("list", favList.toString())
             // HistoriesDao().addToFavorites(dbh, history.word)
             // Toast.makeText(mContext, "${history.word} bookmark clicked", Toast.LENGTH_SHORT).show()
             // This method refreshes the fragment
@@ -81,6 +87,6 @@ class RVAdapterFavorites (private val mContext: Context, private var historyList
     }
 
     override fun getItemCount(): Int {
-        return historyList.size
+        return favList.size
     }
 }
