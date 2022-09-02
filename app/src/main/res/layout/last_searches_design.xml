@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/ll_last_searches_design"
     android:orientation="vertical"
     android:layout_width="wrap_content"
@@ -10,19 +11,36 @@
     android:paddingHorizontal="10dp">
 
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="horizontal">
+
         <TextView
             android:id="@+id/tv_word"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center"
             android:text="Incredible"
             android:textColor="@color/black"
-            android:textSize="14sp"/>
+            android:textSize="14sp" />
 
-    </LinearLayout>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/tv_word"
+            android:layout_alignBottom="@+id/tv_word"
+            android:layout_gravity="center"
+            android:layout_marginTop="-3dp"
+            android:layout_marginBottom="-5dp"
+            android:layout_toEndOf="@+id/tv_word"
+            android:paddingVertical="4dp"
+            android:paddingStart="5dp"
+            android:src="@drawable/ic_baseline_clear_24"
+            app:tint="@color/darkGray" />
+
+    </RelativeLayout>
 
 
 
