@@ -52,7 +52,7 @@ class RVAdapterHistoryFragment (private val mContext: Context, private var histo
         dbh = DatabaseHelper(mContext)
         dbhf = DatabaseHelperFavorites(mContext)
 
-        if (HistoriesDao().isFavorite(dbh, history.word) == 1) {
+        if (FavoritesDao().isInFavorite(dbhf, history.word) == 1) {
             holder.imageViewBookmark.setImageResource(R.drawable.ic_baseline_bookmark_24)
         }
 
@@ -72,7 +72,7 @@ class RVAdapterHistoryFragment (private val mContext: Context, private var histo
          */
 
         holder.imageViewBookmark.setOnClickListener {
-            if (HistoriesDao().isFavorite(dbh, history.word) == 1) {
+            if (FavoritesDao().isInFavorite(dbhf, history.word) == 1) {
                 HistoriesDao().removeFavorites(dbh, history.word)
                 FavoritesDao().deleteFavorites(dbhf, history.word)
                 holder.imageViewBookmark.setImageResource(R.drawable.ic_bookmark)

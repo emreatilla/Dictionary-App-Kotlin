@@ -126,7 +126,8 @@ class HomePageFragment : Fragment() {
         binding.cvShareDailyWord.setOnClickListener {
             shareWord()
         }
-        if (HistoriesDao().isFavorite(dbh, dailyWord) == 1) {
+        // Log.e("resultt", FavoritesDao().isInFavorite(dbhf, "yes").toString())
+        if (FavoritesDao().isInFavorite(dbhf, dailyWord) == 1) {
             binding.ivSaveDailyWord.setImageResource(R.drawable.ic_baseline_bookmark_24)
             binding.tvSaveDailyWord.text = "Unsave"
         } else {
@@ -135,7 +136,7 @@ class HomePageFragment : Fragment() {
         }
         binding.cvSaveDailyWord.setOnClickListener {
             reloadPage()
-            if (HistoriesDao().isFavorite(dbh, dailyWord) == 1) {
+            if (FavoritesDao().isInFavorite(dbhf, dailyWord) == 1) {
                 HistoriesDao().removeFavorites(dbh, dailyWord)
                 FavoritesDao().deleteFavorites(dbhf, dailyWord)
                 binding.ivSaveDailyWord.setImageResource(R.drawable.ic_bookmark)
@@ -302,7 +303,7 @@ class HomePageFragment : Fragment() {
         viewmodel.refreshData(w)
         getLiveData()
 
-        if (HistoriesDao().isFavorite(dbh, w) == 1) {
+        if (FavoritesDao().isInFavorite(dbhf, w) == 1) {
             binding.ivBookmarkSearchPage.setImageResource(R.drawable.ic_baseline_bookmark_24)
             binding.tvSave.text = "Unsave"
         } else {
@@ -311,7 +312,7 @@ class HomePageFragment : Fragment() {
         }
 
         binding.cvSave.setOnClickListener {
-            if (HistoriesDao().isFavorite(dbh, w) == 1) {
+            if (FavoritesDao().isInFavorite(dbhf, w) == 1) {
                 HistoriesDao().removeFavorites(dbh, w)
                 FavoritesDao().deleteFavorites(dbhf, w)
                 binding.ivBookmarkSearchPage.setImageResource(R.drawable.ic_bookmark)
@@ -457,7 +458,7 @@ class HomePageFragment : Fragment() {
                 try {
                     HistoriesDao().addWord(dbh, "\"${word}\"", "\"${def}\"", "\"${speech}\"", 0)
                 } catch (e: Exception) {
-                    val isF = HistoriesDao().isFavorite(dbh, word)
+                    val isF = FavoritesDao().isInFavorite(dbhf, word)
                     HistoriesDao().deleteWord(dbh, word)
                     HistoriesDao().addWord(dbh, "\"${word}\"", "\"${def}\"", "\"${speech}\"", isF)
                 }

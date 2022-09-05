@@ -1,6 +1,7 @@
 package com.example.dictionaryapp.view.db_favorites
 
 import android.annotation.SuppressLint
+import android.util.Log
 import com.example.dictionaryapp.view.db_history.DatabaseHelper
 
 class FavoritesDao {
@@ -26,6 +27,23 @@ class FavoritesDao {
     fun deleteFavorites(dbh: DatabaseHelperFavorites, w: String) {
         val db = dbh.writableDatabase
         db.execSQL("DELETE FROM favorites WHERE word = \"$w\"")
+    }
+
+    @SuppressLint("Range")
+    fun isInFavorite(dbh: DatabaseHelperFavorites, w: String): Int {
+        val db = dbh.writableDatabase
+        val isFavorite = db.rawQuery("SELECT * FROM favorites WHERE word = \"$w\"", null)
+        val favoritesList = ArrayList<String>()
+        var wordForIsFavorite: String
+        while (isFavorite.moveToNext()) {
+            wordForIsFavorite = isFavorite.getString(isFavorite.getColumnIndex("word"))
+            favoritesList.add(wordForIsFavorite)
+        }
+        Log.e("result", favoritesList.toString())
+        if (favoritesList.isEmpty()) {
+            return 0
+        }
+        else { return 1 }
     }
 
     @SuppressLint("Range", "Recycle")
