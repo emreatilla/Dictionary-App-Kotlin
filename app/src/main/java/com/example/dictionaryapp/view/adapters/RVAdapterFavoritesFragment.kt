@@ -53,9 +53,7 @@ class RVAdapterFavoritesFragment (private val mContext: Context, private var his
         dbh = DatabaseHelper(mContext)
         dbhf = DatabaseHelperFavorites(mContext)
 
-        if (HistoriesDao().isFavorite(dbh, history.word) == 1) {
-            holder.imageViewBookmark.setImageResource(R.drawable.ic_baseline_bookmark_24)
-        }
+        holder.imageViewBookmark.setImageResource(R.drawable.ic_baseline_bookmark_24)
 
         holder.textViewWord.text = history.word
 

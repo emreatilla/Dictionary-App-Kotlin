@@ -52,13 +52,11 @@ class RVAdapterFavorites (private val mContext: Context, private var favList:Lis
         dbh = DatabaseHelper(mContext)
         dbhf = DatabaseHelperFavorites(mContext)
 
+        holder.imageViewBookmark.setImageResource(R.drawable.ic_baseline_bookmark_24)
+
         holder.textViewWord.text = history.word
 
         holder.textViewSpeech.text = "[" + history.speech + "] "
-
-        if (HistoriesDao().isFavorite(dbh, history.word) == 1) {
-            holder.imageViewBookmark.setImageResource(R.drawable.ic_baseline_bookmark_24)
-        }
 
         if (history.definition.length > 55) {
             holder.textViewDefinition.text = history.definition.take(53) + "..."
