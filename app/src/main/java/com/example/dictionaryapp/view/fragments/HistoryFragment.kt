@@ -1,13 +1,18 @@
 package com.example.dictionaryapp.view.fragments
 
+import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.dictionaryapp.databinding.FragmentHistoryBinding
+import com.example.dictionaryapp.view.SwipeToDeleteCallback
 import com.example.dictionaryapp.view.adapters.RVAdapterHistoryFragment
 import com.example.dictionaryapp.view.db_history.DatabaseHelper
 import com.example.dictionaryapp.view.db_history.Histories
@@ -38,8 +43,31 @@ class HistoryFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         dbh = DatabaseHelper(requireContext())
+
+        callRecyclerView()
+
+        if (adapterHistory.itemCount != 0) {
+            binding.tvBlankHistory.visibility = View.GONE
+        }
+
+        val swipeToDeleteCallback = object : SwipeToDeleteCallback() {
+            @SuppressLint("NotifyDataSetChanged")
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val position = viewHolder.adapterPosition
+                // Log.e("hislist", hisList[position].word)
+                HistoriesDao().deleteWord(dbh, hisList[position].word)
+                callRecyclerView()
+                // Log.e("hislist", hisList.toString())
+                binding.rvHistoryPage.adapter?.notifyItemRemoved(position)
+            }
+
+        }
+        val itemTouchHelper = ItemTouchHelper(swipeToDeleteCallback)
+        itemTouchHelper.attachToRecyclerView(binding.rvHistoryPage)
+    }
+
+    private fun callRecyclerView() {
         hisList = HistoriesDao().getHistory(dbh)
-        // Log.e("HIS FRA", hisList.toString())
         adapterHistory = RVAdapterHistoryFragment(requireContext(), hisList) {
             val bundle = Bundle()
             bundle.putString("word", it)
@@ -48,9 +76,5 @@ class HistoryFragment : Fragment() {
         binding.rvHistoryPage.adapter = adapterHistory
         binding.rvHistoryPage.setHasFixedSize(true)
         binding.rvHistoryPage.layoutManager = StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
-
-        if (adapterHistory.itemCount != 0) {
-            binding.tvBlankHistory.visibility = View.GONE
-        }
     }
 }
