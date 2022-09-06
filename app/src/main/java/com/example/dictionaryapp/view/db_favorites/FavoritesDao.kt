@@ -24,12 +24,17 @@ class FavoritesDao {
         db.execSQL("INSERT INTO favorites (word, definition, speech) VALUES(\"${w}\", \"${defString}\", \"${speString}\")")
     }
 
+    fun addDailyWordFavorites(dbhf: DatabaseHelperFavorites, w: String, def:String, speech:String) {
+        val db = dbhf.writableDatabase
+        db.execSQL("INSERT INTO favorites (word, definition, speech) VALUES(\"${w}\", \"${def}\", \"${speech}\")")
+    }
+
     fun deleteFavorites(dbh: DatabaseHelperFavorites, w: String) {
         val db = dbh.writableDatabase
         db.execSQL("DELETE FROM favorites WHERE word = \"$w\"")
     }
 
-    @SuppressLint("Range")
+    @SuppressLint("Range", "Recycle")
     fun isInFavorite(dbh: DatabaseHelperFavorites, w: String): Int {
         val db = dbh.writableDatabase
         val isFavorite = db.rawQuery("SELECT * FROM favorites WHERE word = \"$w\"", null)
