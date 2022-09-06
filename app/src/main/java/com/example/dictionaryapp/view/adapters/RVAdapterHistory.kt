@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.dictionaryapp.R
 import com.example.dictionaryapp.view.db_favorites.FavoritesDao
@@ -50,6 +51,10 @@ class RVAdapterHistory (private val mContext: Context, private var historyList:L
             notifyItemRemoved(position)
             historyList = HistoriesDao().getHistory(dbh)
             notifyItemRangeChanged(position, historyList.size)
+            if (itemCount == 0) {
+                it.findNavController().popBackStack(R.id.homePageFragment, true)
+                it.findNavController().navigate(R.id.homePageFragment)
+            }
         }
 
         holder.linearLayoutDesign.setOnClickListener { listener(history.word) }
