@@ -44,7 +44,9 @@ class HistoriesDao {
 
     fun addWord(dbh: DatabaseHelper, w: String, def: String, speech: String, flag: Int) {
         val db = dbh.writableDatabase
-        db.execSQL("INSERT INTO histories (word, definition, speech, isFlagged) VALUES(${w}, ${def}, ${speech}, ${flag})")
+        val removedDoubleQuotesDefinition = def.substring(1, def.length - 1)
+        val removedDoubleQuotesDefinition2 = removedDoubleQuotesDefinition.replace("\"", "'")
+        db.execSQL("INSERT INTO histories (word, definition, speech, isFlagged) VALUES(${w}, \"${removedDoubleQuotesDefinition2}\", ${speech}, ${flag})")
     }
 
     fun deleteWord(dbh: DatabaseHelper, w: String) {
