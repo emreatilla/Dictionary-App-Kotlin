@@ -3,6 +3,7 @@ package com.example.dictionaryapp.view.fragments
 import android.annotation.SuppressLint
 import android.content.ClipData
 import android.content.ClipboardManager
+import android.content.Context
 import android.content.Intent
 import android.media.AudioManager
 import android.media.MediaPlayer
@@ -11,7 +12,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.SearchView
 import android.widget.Toast
@@ -24,9 +24,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.dictionaryapp.R
 import com.example.dictionaryapp.databinding.FragmentHomePageBinding
-import com.example.dictionaryapp.model.DictionaryModel
-import com.example.dictionaryapp.model.DictionaryModelItem
-import com.example.dictionaryapp.view.SingleLiveEvent
 import com.example.dictionaryapp.view.adapters.RVAdapter
 import com.example.dictionaryapp.view.adapters.RVAdapterFavorites
 import com.example.dictionaryapp.view.adapters.RVAdapterHistory
@@ -43,7 +40,6 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
 
 
 class HomePageFragment : Fragment() {
@@ -119,8 +115,17 @@ class HomePageFragment : Fragment() {
             // arguments?.getString("word")?.let { Log.e("getarg", it) }
         }
 
-        viewModelDailyWord.refreshData(dailyWord)
-        getLiveDataDailyWord()
+
+
+        val prefs = requireActivity().getSharedPreferences("pref", Context.MODE_PRIVATE)
+        prefs.apply {
+            val word = getString("WORD", "")
+
+            if (word != dailyWord) {
+                viewModelDailyWord.refreshData(dailyWord)
+                getLiveDataDailyWord()
+            }
+        }
         Log.e("hayn", binding.tvDailyWord.text.toString())
         Log.e("hayn", "haynnn")
         binding.tvDateTime.text = getCurrentDate()
@@ -151,7 +156,14 @@ class HomePageFragment : Fragment() {
                 binding.tvSaveDailyWord.text = "Save"
             } else {
                 HistoriesDao().addToFavorites(dbh, dailyWord)
-                FavoritesDao().addDailyWordFavorites(dbhf, dailyWord, dailyDef, dailySpeech)
+                prefs.apply {
+                    val word = getString("WORD", "")
+                    val definition = getString("DEFINITION", "")
+                    val speech = getString("SPEECH", "")
+
+
+                    FavoritesDao().addDailyWordFavorites(dbhf, word.toString(), definition.toString(), speech.toString())
+                }
                 binding.ivSaveDailyWord.setImageResource(R.drawable.ic_baseline_bookmark_24)
                 binding.tvSaveDailyWord.text = "Unsave"
             }
@@ -159,12 +171,15 @@ class HomePageFragment : Fragment() {
         binding.cvListenDailyWord.setOnClickListener {
             mediaPlayer = MediaPlayer()
             mediaPlayer!!.setAudioStreamType(AudioManager.STREAM_MUSIC)
-            try {
-                mediaPlayer!!.setDataSource(dailyAudio)
-                mediaPlayer!!.prepare()
-                mediaPlayer!!.start()
-            } catch (e: IOException) {
-                e.printStackTrace()
+            prefs.apply {
+                val audio = getString("AUDIO", "")
+                try {
+                    mediaPlayer!!.setDataSource(audio)
+                    mediaPlayer!!.prepare()
+                    mediaPlayer!!.start()
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                }
             }
         }
 
@@ -434,6 +449,7 @@ class HomePageFragment : Fragment() {
     }
      */
 
+    @SuppressLint("CommitPrefEdits")
     fun getLiveDataDailyWord() {
         viewModelDailyWord.dictionary_data.observe(viewLifecycleOwner, Observer { data ->
             data?.takeIf { userVisibleHint }?.getContentIfNotHandled()?.let { it ->
@@ -456,6 +472,15 @@ class HomePageFragment : Fragment() {
 
                     // audio = it[0].phonetics[it[0].phonetics.lastIndex].audio
                 }
+                val prefs = requireActivity().getSharedPreferences("pref", Context.MODE_PRIVATE)
+                val editor = prefs.edit()
+
+                editor
+                    .putString("WORD", dailyWord)
+                    .putString("DEFINITION", dailyDef)
+                    .putString("SPEECH", dailySpeech)
+                    .putString("AUDIO", dailyAudio)
+                    .apply()
             }
         })
 
