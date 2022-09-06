@@ -37,6 +37,7 @@ import com.example.dictionaryapp.view.db_history.DatabaseHelper
 import com.example.dictionaryapp.view.db_history.Histories
 import com.example.dictionaryapp.view.db_history.HistoriesDao
 import com.example.dictionaryapp.viewmodel.MainViewModel
+import com.example.dictionaryapp.viewmodel.MainViewModelDailyWord
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import java.io.IOException
@@ -54,6 +55,7 @@ class HomePageFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val viewmodel: MainViewModel by viewModels()
+    private val viewModelDailyWord: MainViewModelDailyWord by viewModels()
 
     private lateinit var dbh: DatabaseHelper
     private lateinit var dbhf: DatabaseHelperFavorites
@@ -65,6 +67,10 @@ class HomePageFragment : Fragment() {
     private var def: String = ""
     private var speech: String = ""
     private var audio: String = ""
+
+    private var dailyWord = ""
+    private var dailyDef = ""
+    private var dailySpeech= ""
     private var dailyAudio = ""
 
     var mediaPlayer: MediaPlayer? = null
@@ -100,6 +106,7 @@ class HomePageFragment : Fragment() {
     @SuppressLint("InflateParams", "SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val navBar = requireActivity().findViewById<BottomNavigationView>(R.id.bottom_bar)
+        dailyWord = getDailyWord()
         super.onViewCreated(view, savedInstanceState)
 
         dbh = DatabaseHelper(requireContext())
@@ -112,8 +119,9 @@ class HomePageFragment : Fragment() {
             // arguments?.getString("word")?.let { Log.e("getarg", it) }
         }
 
+        viewModelDailyWord.refreshData(dailyWord)
+        getLiveDataDailyWord()
         Log.e("hayn", binding.tvDailyWord.text.toString())
-        val dailyWord = getDailyWord()
         Log.e("hayn", "haynnn")
         binding.tvDateTime.text = getCurrentDate()
         binding.tvDailyWord.text = dailyWord
@@ -143,12 +151,11 @@ class HomePageFragment : Fragment() {
                 binding.tvSaveDailyWord.text = "Save"
             } else {
                 HistoriesDao().addToFavorites(dbh, dailyWord)
-                FavoritesDao().addFavorites(dbhf, dbh, dailyWord)
+                FavoritesDao().addDailyWordFavorites(dbhf, dailyWord, dailyDef, dailySpeech)
                 binding.ivSaveDailyWord.setImageResource(R.drawable.ic_baseline_bookmark_24)
                 binding.tvSaveDailyWord.text = "Unsave"
             }
         }
-        /*
         binding.cvListenDailyWord.setOnClickListener {
             mediaPlayer = MediaPlayer()
             mediaPlayer!!.setAudioStreamType(AudioManager.STREAM_MUSIC)
@@ -160,7 +167,6 @@ class HomePageFragment : Fragment() {
                 e.printStackTrace()
             }
         }
-         */
 
 
         binding.cvShare.setOnClickListener {
@@ -427,6 +433,34 @@ class HomePageFragment : Fragment() {
         })
     }
      */
+
+    fun getLiveDataDailyWord() {
+        viewModelDailyWord.dictionary_data.observe(viewLifecycleOwner, Observer { data ->
+            data?.takeIf { userVisibleHint }?.getContentIfNotHandled()?.let { it ->
+                dailyWord = it[0].word
+                dailyDef = it[0].meanings[0].definitions[0].definition
+                dailySpeech = it[0].meanings[0].partOfSpeech.take(1)
+
+                binding.cvListenDailyWord.visibility = View.GONE
+
+                // bazen audio başta yada sonda olabiliyor
+                for (i in it[0].phonetics) {
+                    dailyAudio = i.audio
+                    Log.e("audio", dailyAudio)
+                    if (dailyAudio != "") {
+                        binding.cvListenDailyWord.visibility = View.VISIBLE
+                        break
+                    } else {
+                        continue
+                    }
+
+                    // audio = it[0].phonetics[it[0].phonetics.lastIndex].audio
+                }
+            }
+        })
+
+    }
+
 
     @SuppressLint("SetTextI18n")
     fun getLiveData() {
