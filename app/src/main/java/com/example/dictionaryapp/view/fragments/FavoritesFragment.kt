@@ -57,6 +57,7 @@ class FavoritesFragment : Fragment() {
 
         if (adapterHistory.itemCount != 0) {
             binding.tvBlankHistory.visibility = View.GONE
+            binding.lottieEmpty.visibility = View.GONE
         }
     }
 }

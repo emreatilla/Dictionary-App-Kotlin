@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_gravity="center"
     android:orientation="vertical"
     tools:context=".view.fragments.FavoritesFragment">
@@ -37,13 +38,31 @@
             tools:listitem="@layout/history_design"/>
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/tv_blank_history"
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="There are no words saved yet ..."
-        android:textStyle="italic"
-        android:layout_gravity="center"
-        android:gravity="center"/>
+        android:gravity="center">
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/lottie_empty"
+            android:layout_width="wrap_content"
+            android:layout_height="200dp"
+            android:padding="40dp"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/tumbleweed_rolling" />
+
+        <TextView
+            android:id="@+id/tv_blank_history"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/lottie_empty"
+            android:layout_marginTop="0dp"
+            android:gravity="center"
+            android:text="There are no words saved yet ..."
+            android:textSize="18sp"
+            android:textStyle="italic" />
+    </RelativeLayout>
 
 </LinearLayout>
