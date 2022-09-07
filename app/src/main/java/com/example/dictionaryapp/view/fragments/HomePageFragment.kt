@@ -168,6 +168,9 @@ class HomePageFragment : Fragment() {
                 binding.tvSaveDailyWord.text = "Unsave"
             }
         }
+        if (dailyAudio == "") {
+            binding.cvListenDailyWord.visibility = View.GONE
+        }
         binding.cvListenDailyWord.setOnClickListener {
             mediaPlayer = MediaPlayer()
             mediaPlayer!!.setAudioStreamType(AudioManager.STREAM_MUSIC)
