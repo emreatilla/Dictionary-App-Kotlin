@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Emre/AndroidStudioProjects/DictionaryApp/app/src/main/res/drawable-v23/circle_rounded_filled.xml" value="0.313" />
         <entry key="..\:/Users/Emre/AndroidStudioProjects/DictionaryApp/app/src/main/res/drawable-v24/card_view_bg.xml" value="0.2875" />
         <entry key="..\:/Users/Emre/AndroidStudioProjects/DictionaryApp/app/src/main/res/drawable-v24/card_view_bg_2.xml" value="0.2875" />
         <entry key="..\:/Users/Emre/AndroidStudioProjects/DictionaryApp/app/src/main/res/drawable-v24/custominput.xml" value="0.3165" />
@@ -11,7 +12,9 @@
         <entry key="..\:/Users/Emre/AndroidStudioProjects/DictionaryApp/app/src/main/res/drawable/background.xml" value="0.482" />
         <entry key="..\:/Users/Emre/AndroidStudioProjects/DictionaryApp/app/src/main/res/drawable/bg_bottom_sheet_dialog.xml" value="0.3165" />
         <entry key="..\:/Users/Emre/AndroidStudioProjects/DictionaryApp/app/src/main/res/drawable/bg_rv_tail.xml" value="0.3165" />
+        <entry key="..\:/Users/Emre/AndroidStudioProjects/DictionaryApp/app/src/main/res/drawable/circle_rounded_filled.xml" value="0.313" />
         <entry key="..\:/Users/Emre/AndroidStudioProjects/DictionaryApp/app/src/main/res/drawable/daliy_word_bg.xml" value="0.3155" />
+        <entry key="..\:/Users/Emre/AndroidStudioProjects/DictionaryApp/app/src/main/res/drawable/dialog_custom_borders.xml" value="0.313" />
         <entry key="..\:/Users/Emre/AndroidStudioProjects/DictionaryApp/app/src/main/res/drawable/ic_arrow_back.xml" value="0.32" />
         <entry key="..\:/Users/Emre/AndroidStudioProjects/DictionaryApp/app/src/main/res/drawable/ic_baseline_add_24.xml" value="0.32" />
         <entry key="..\:/Users/Emre/AndroidStudioProjects/DictionaryApp/app/src/main/res/drawable/ic_baseline_bookmark_24.xml" value="0.32" />
@@ -24,8 +27,11 @@
         <entry key="..\:/Users/Emre/AndroidStudioProjects/DictionaryApp/app/src/main/res/drawable/under_sv_bg.xml" value="0.318" />
         <entry key="..\:/Users/Emre/AndroidStudioProjects/DictionaryApp/app/src/main/res/layout/activity_home_page.xml" value="0.4" />
         <entry key="..\:/Users/Emre/AndroidStudioProjects/DictionaryApp/app/src/main/res/layout/activity_main.xml" value="0.264" />
+        <entry key="..\:/Users/Emre/AndroidStudioProjects/DictionaryApp/app/src/main/res/layout/custom_dialog.xml" value="0.5541666666666667" />
         <entry key="..\:/Users/Emre/AndroidStudioProjects/DictionaryApp/app/src/main/res/layout/definition_card.xml" value="0.536" />
         <entry key="..\:/Users/Emre/AndroidStudioProjects/DictionaryApp/app/src/main/res/layout/favorites_design.xml" value="0.3255208333333333" />
+        <entry key="..\:/Users/Emre/AndroidStudioProjects/DictionaryApp/app/src/main/res/layout/fragment_custom_one_dialog.xml" value="0.5541666666666667" />
+        <entry key="..\:/Users/Emre/AndroidStudioProjects/DictionaryApp/app/src/main/res/layout/fragment_dialog_custom_one.xml" value="0.5541666666666667" />
         <entry key="..\:/Users/Emre/AndroidStudioProjects/DictionaryApp/app/src/main/res/layout/fragment_favorites.xml" value="0.5401041666666667" />
         <entry key="..\:/Users/Emre/AndroidStudioProjects/DictionaryApp/app/src/main/res/layout/fragment_history.xml" value="0.536" />
         <entry key="..\:/Users/Emre/AndroidStudioProjects/DictionaryApp/app/src/main/res/layout/fragment_home_page.xml" value="0.536" />
