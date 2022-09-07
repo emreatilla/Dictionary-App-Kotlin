@@ -1,6 +1,7 @@
 package com.example.dictionaryapp.view.fragments
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -53,8 +54,14 @@ class HistoryFragment : Fragment() {
         }
 
         binding.ivDeleteHistory.setOnClickListener {
-            HistoriesDao().deleteAllRecords(dbh)
-            reloadPage()
+            AlertDialog.Builder(requireContext()).setMessage("Are you sure you want to permanently delete all search history ?")
+                .setPositiveButton("Delete") {_, _ ->
+                    HistoriesDao().deleteAllRecords(dbh)
+                    reloadPage()
+                }
+                .setNegativeButton("Cancel") {_, _ -> }
+                .show()
+
         }
 
         val swipeToDeleteCallback = object : SwipeToDeleteCallback() {
