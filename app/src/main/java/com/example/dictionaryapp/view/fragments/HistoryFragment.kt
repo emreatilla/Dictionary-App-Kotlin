@@ -8,6 +8,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -18,6 +20,8 @@ import com.example.dictionaryapp.view.adapters.RVAdapterHistoryFragment
 import com.example.dictionaryapp.view.db_history.DatabaseHelper
 import com.example.dictionaryapp.view.db_history.Histories
 import com.example.dictionaryapp.view.db_history.HistoriesDao
+import com.example.dictionaryapp.view.dialogs.CustomOneDialog
+import com.example.dictionaryapp.viewmodel.SharedViewModel
 
 
 class HistoryFragment : Fragment() {
@@ -54,6 +58,18 @@ class HistoryFragment : Fragment() {
         }
 
         binding.ivDeleteHistory.setOnClickListener {
+            CustomOneDialog().show(childFragmentManager, "CustomOneDialog")
+
+            val model = ViewModelProvider(requireActivity())[SharedViewModel::class.java]
+            // observing the change in the message declared in SharedViewModel
+            model.condition.observe(viewLifecycleOwner, Observer {
+                // updating data in displayMsg
+                Log.e("itttttt", it.toString())
+                if (it) {
+                    reloadPage()
+                }
+            })
+            /*
             AlertDialog.Builder(requireContext()).setMessage("Are you sure you want to permanently delete all search history ?")
                 .setPositiveButton("Delete") {_, _ ->
                     HistoriesDao().deleteAllRecords(dbh)
@@ -61,6 +77,7 @@ class HistoryFragment : Fragment() {
                 }
                 .setNegativeButton("Cancel") {_, _ -> }
                 .show()
+             */
 
         }
 
