@@ -32,6 +32,11 @@ class HistoriesDao {
         return historyList
     }
 
+    fun deleteAllRecords(dbh: DatabaseHelper) {
+        val db = dbh.writableDatabase
+        db.execSQL("DELETE FROM histories")
+    }
+
     fun addToFavorites(dbh: DatabaseHelper, w: String) {
         val db = dbh.writableDatabase
         db.execSQL("UPDATE histories SET isFlagged = 1 WHERE word = \"$w\"")

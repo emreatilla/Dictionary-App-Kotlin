@@ -49,6 +49,12 @@ class HistoryFragment : Fragment() {
         if (adapterHistory.itemCount != 0) {
             binding.tvBlankHistory.visibility = View.GONE
             binding.lottieEmpty.visibility = View.GONE
+            binding.ivDeleteHistory.visibility = View.VISIBLE
+        }
+
+        binding.ivDeleteHistory.setOnClickListener {
+            HistoriesDao().deleteAllRecords(dbh)
+            reloadPage()
         }
 
         val swipeToDeleteCallback = object : SwipeToDeleteCallback() {
@@ -60,14 +66,18 @@ class HistoryFragment : Fragment() {
                 callRecyclerView()
                 // Log.e("hislist", hisList.toString())
                 binding.rvHistoryPage.adapter?.notifyItemRemoved(position)
-                val id = findNavController().currentDestination?.id
-                findNavController().popBackStack(id!!, true)
-                findNavController().navigate(id)
+                reloadPage()
             }
 
         }
         val itemTouchHelper = ItemTouchHelper(swipeToDeleteCallback)
         itemTouchHelper.attachToRecyclerView(binding.rvHistoryPage)
+    }
+
+    private fun reloadPage() {
+        val id = findNavController().currentDestination?.id
+        findNavController().popBackStack(id!!, true)
+        findNavController().navigate(id)
     }
 
     private fun callRecyclerView() {
