@@ -3,25 +3,40 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_gravity="center"
     android:orientation="vertical"
     tools:context=".view.fragments.HistoryFragment">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:background="@drawable/search_red_bg">
 
 
         <TextView
+            android:id="@+id/title_hist"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="History"
-            android:gravity="center"
-            android:textSize="40sp"
             android:layout_marginBottom="10dp"
-            android:textColor="@color/white"/>
-    </LinearLayout>
+            android:gravity="center"
+            android:text="History"
+            android:textColor="@color/white"
+            android:textSize="40sp" />
+
+        <ImageView
+            android:id="@+id/iv_delete_history"
+            android:layout_width="50dp"
+            android:layout_height="43dp"
+            android:layout_alignBottom="@+id/title_hist"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="0dp"
+            android:src="@drawable/ic_delete_outline_24" />
+    </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -37,13 +52,31 @@
             tools:listitem="@layout/history_design"/>
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/tv_blank_history"
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="There is no previous searches yet ..."
-        android:textStyle="italic"
-        android:layout_gravity="center"
-        android:gravity="center"/>
+        android:gravity="center">
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/lottie_empty"
+            android:layout_width="wrap_content"
+            android:layout_height="200dp"
+            android:padding="40dp"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/tumbleweed_rolling" />
+
+        <TextView
+            android:id="@+id/tv_blank_history"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/lottie_empty"
+            android:layout_marginTop="0dp"
+            android:gravity="center"
+            android:text="There is no previous searches yet ..."
+            android:textSize="18sp"
+            android:textStyle="italic" />
+    </RelativeLayout>
 
 </LinearLayout>
