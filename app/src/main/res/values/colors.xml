@@ -4,4 +4,6 @@
     <color name="darkGray">#434343</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="md_white_1000">#FFEBEDF4</color>
+    <color name="md_light_green_A700">#11A120</color>
 </resources>
