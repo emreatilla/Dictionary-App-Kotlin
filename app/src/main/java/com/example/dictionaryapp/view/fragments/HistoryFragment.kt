@@ -66,7 +66,11 @@ class HistoryFragment : Fragment() {
                 // updating data in displayMsg
                 Log.e("itttttt", it.toString())
                 if (it) {
-                    reloadPage()
+                    callRecyclerView()
+                    binding.tvBlankHistory.visibility = View.VISIBLE
+                    binding.lottieEmpty.visibility = View.VISIBLE
+                    binding.ivDeleteHistory.visibility = View.GONE
+                    model.sendBoolean(false)
                 }
             })
             /*

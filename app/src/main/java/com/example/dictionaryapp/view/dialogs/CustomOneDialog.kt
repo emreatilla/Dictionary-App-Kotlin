@@ -24,7 +24,7 @@ class CustomOneDialog : DialogFragment() {
 
         binding.btnCancel.setOnClickListener {
             dialog?.dismiss()
-            isDeleteOK = true
+            isDeleteOK = false
             model.sendBoolean(isDeleteOK)
         }
         binding.btnDone.setOnClickListener {
