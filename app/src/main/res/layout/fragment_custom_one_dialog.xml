@@ -68,6 +68,25 @@
     </LinearLayout>
 
 
+    <RelativeLayout
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:background="@drawable/custom_dialog_icon_bg"
+        android:gravity="center"
+        android:layout_marginTop="-28dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/linearLayout">
+        <com.airbnb.lottie.LottieAnimationView
+            android:layout_width="68dp"
+            android:layout_height="68dp"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="false"
+            app:lottie_rawRes="@raw/exclamation_mark"/>
+    </RelativeLayout>
+
+    <!--
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/appCompatImageView"
         android:layout_width="68dp"
@@ -78,6 +97,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/linearLayout"
         app:srcCompat="@drawable/circle_rounded_filled" />
+        -->
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
