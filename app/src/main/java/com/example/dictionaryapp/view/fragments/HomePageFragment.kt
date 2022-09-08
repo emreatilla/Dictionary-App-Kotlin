@@ -24,6 +24,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.dictionaryapp.R
 import com.example.dictionaryapp.databinding.FragmentHomePageBinding
+import com.example.dictionaryapp.view.MyToast
 import com.example.dictionaryapp.view.adapters.RVAdapter
 import com.example.dictionaryapp.view.adapters.RVAdapterFavorites
 import com.example.dictionaryapp.view.adapters.RVAdapterHistory
@@ -350,19 +351,22 @@ class HomePageFragment : Fragment() {
         }
     }
 
-    fun copyClipboard(word: String) {
+    private fun copyClipboard(word: String) {
         val myClipboard =
             getSystemService(requireContext(), ClipboardManager::class.java) as ClipboardManager
         val clip: ClipData = ClipData.newPlainText("simple text", word)
+        /*
         Toast.makeText(
             requireContext(),
             "Word \"$word\" is copied to the clipboard.",
             Toast.LENGTH_SHORT
         ).show()
+         */
+        MyToast.show(requireContext(), "Word \"$word\" is copied to the clipboard.", true, 0)
         myClipboard.setPrimaryClip(clip)
     }
 
-    fun shareWord() {
+    private fun shareWord() {
         val intent = Intent()
         intent.action = Intent.ACTION_SEND
         intent.putExtra(Intent.EXTRA_TEXT, "Hey Check out this Great app:")
@@ -568,11 +572,15 @@ class HomePageFragment : Fragment() {
         viewmodel.dictionary_error.observe(viewLifecycleOwner, Observer { error ->
             error?.takeIf { userVisibleHint }?.getContentIfNotHandled()?.let {
                 if (it)
+                    /*
                     Toast(requireContext()).apply{
                         duration = Toast.LENGTH_LONG
                         view = layoutInflater.inflate(R.layout.custom_toast_message, null)
                     }
                         .show()
+                     */
+
+                    MyToast.show(requireContext(), "You gave invalid word ! ", true, 1)
                 binding.searchView.visibility = View.VISIBLE
                 binding.pBar.visibility = View.GONE
             }

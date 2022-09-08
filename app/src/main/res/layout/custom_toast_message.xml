@@ -9,10 +9,12 @@
     android:padding="9dp">
 
     <ImageView
+        android:id="@+id/iv_toast"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:src="@drawable/ic_baseline_info_24"/>
     <TextView
+        android:id="@+id/tv_message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
