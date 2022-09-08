@@ -490,7 +490,7 @@ class HomePageFragment : Fragment() {
     }
 
 
-    @SuppressLint("SetTextI18n")
+    @SuppressLint("SetTextI18n", "InflateParams")
     fun getLiveData() {
         viewmodel.dictionary_data.observe(viewLifecycleOwner, Observer { data ->
             // viewmodel.dictionary_data.value = null
@@ -568,7 +568,10 @@ class HomePageFragment : Fragment() {
         viewmodel.dictionary_error.observe(viewLifecycleOwner, Observer { error ->
             error?.takeIf { userVisibleHint }?.getContentIfNotHandled()?.let {
                 if (it)
-                    Toast.makeText(requireContext(), "ERROR INVALID WORD", Toast.LENGTH_SHORT)
+                    Toast(requireContext()).apply{
+                        duration = Toast.LENGTH_LONG
+                        view = layoutInflater.inflate(R.layout.custom_toast_message, null)
+                    }
                         .show()
                 binding.searchView.visibility = View.VISIBLE
                 binding.pBar.visibility = View.GONE
