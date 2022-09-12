@@ -32,9 +32,11 @@ Pages of The Application and User Actions
 * History Page
     * On this page, all the words that the user has searched before are displayed to the user. User can delete words from history by simply swiping words to left.The user can delete the entire history with the trash can icon in the upper right corner of the page. The application prompts the user before deleting all history.
 
-App GIF
+App Video
 --------------
-![]()
+https://user-images.githubusercontent.com/55705390/189671054-9cd7a81d-b9d6-431d-ab5a-494778ed91dc.mp4
+
+
 
 
 
