@@ -1,6 +1,5 @@
 package com.example.dictionaryapp.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -15,7 +14,6 @@ class MainViewModelDailyWord: ViewModel() {
     private val dictionaryAPIService = DictionaryAPIService()
     private val disposable = CompositeDisposable()
 
-    // val dictionary_data = MutableLiveData<DictionaryModel>()
     private val dictionary_data_ = MutableLiveData<SingleLiveEvent<DictionaryModel>>()
     val dictionary_data: LiveData<SingleLiveEvent<DictionaryModel>> get() = dictionary_data_
 
@@ -31,7 +29,6 @@ class MainViewModelDailyWord: ViewModel() {
 
     private fun getDataFromAPI(word: String) {
         dictionary_load_.value = SingleLiveEvent(true)
-        // dictionary_error.value = false
 
         disposable.add(
             dictionaryAPIService.getDataService(word)
@@ -40,19 +37,14 @@ class MainViewModelDailyWord: ViewModel() {
                 .subscribe({ deger ->
 
                     dictionary_data_.postValue(SingleLiveEvent(deger))
-
                     dictionary_error_.value = SingleLiveEvent(false)
                     dictionary_load_.value = SingleLiveEvent(false)
 
                 },
                     {
-                        Log.e("aaa", it.toString())
                         dictionary_error_.value = SingleLiveEvent(true)
                         dictionary_load_.value = SingleLiveEvent(true)
-
-
                     })
         )
     }
-
 }

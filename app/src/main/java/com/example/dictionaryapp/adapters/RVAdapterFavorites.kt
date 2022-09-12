@@ -2,7 +2,6 @@ package com.example.dictionaryapp.adapters
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -71,9 +70,6 @@ class RVAdapterFavorites (private val mContext: Context, private var favList:Lis
             notifyItemRemoved(position)
             favList = FavoritesDao().getFavorites(dbhf)
             notifyItemRangeChanged(position, favList.size)
-            Log.e("list", favList.toString())
-            // HistoriesDao().addToFavorites(dbh, history.word)
-            // Toast.makeText(mContext, "${history.word} bookmark clicked", Toast.LENGTH_SHORT).show()
             // This method refreshes the fragment
             it.findNavController().popBackStack(R.id.homePageFragment,true)
             it.findNavController().navigate(R.id.homePageFragment)

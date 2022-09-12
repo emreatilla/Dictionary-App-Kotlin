@@ -6,8 +6,6 @@ import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 
-// https://api.dictionaryapi.dev/api/v2/entries/en/bank
-
 
 class DictionaryAPIService {
     private val BASE_URL = "https://api.dictionaryapi.dev"

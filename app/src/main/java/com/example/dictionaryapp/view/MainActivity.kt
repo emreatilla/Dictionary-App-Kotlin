@@ -11,9 +11,7 @@ import com.example.dictionaryapp.db.db_history.DatabaseCopyHelper
 import java.lang.Exception
 
 class MainActivity : AppCompatActivity() {
-    private var _binding : ActivityMainBinding?= null
     private lateinit var binding : ActivityMainBinding
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
@@ -26,8 +24,6 @@ class MainActivity : AppCompatActivity() {
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
 
         NavigationUI.setupWithNavController(binding.bottomBar, navHostFragment.navController)
-
-
     }
 
     private fun dataBaseCopy(){

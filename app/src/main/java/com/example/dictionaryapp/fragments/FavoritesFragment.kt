@@ -43,9 +43,7 @@ class FavoritesFragment : Fragment() {
 
         dbh = DatabaseHelper(requireContext())
         dbhf = DatabaseHelperFavorites(requireContext())
-        // favList = HistoriesDao().getFavorites(dbh)
         favFavList = FavoritesDao().getFavorites(dbhf)
-        // Log.e("HIS FRA", hisList.toString())
         adapterHistory = RVAdapterFavoritesFragment(requireContext(), favFavList) {
             val bundle = Bundle()
             bundle.putString("word", it)

@@ -2,7 +2,6 @@ package com.example.dictionaryapp.fragments
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -64,7 +63,6 @@ class HistoryFragment : Fragment() {
             // observing the change in the message declared in SharedViewModel
             model.condition.observe(viewLifecycleOwner, Observer {
                 // updating data in displayMsg
-                Log.e("itttttt", it.toString())
                 if (it) {
                     callRecyclerView()
                     binding.tvBlankHistory.visibility = View.VISIBLE
@@ -73,26 +71,14 @@ class HistoryFragment : Fragment() {
                     model.sendBoolean(false)
                 }
             })
-            /*
-            AlertDialog.Builder(requireContext()).setMessage("Are you sure you want to permanently delete all search history ?")
-                .setPositiveButton("Delete") {_, _ ->
-                    HistoriesDao().deleteAllRecords(dbh)
-                    reloadPage()
-                }
-                .setNegativeButton("Cancel") {_, _ -> }
-                .show()
-             */
-
         }
 
         val swipeToDeleteCallback = object : SwipeToDeleteCallback() {
             @SuppressLint("NotifyDataSetChanged")
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val position = viewHolder.adapterPosition
-                // Log.e("hislist", hisList[position].word)
                 HistoriesDao().deleteWord(dbh, hisList[position].word)
                 callRecyclerView()
-                // Log.e("hislist", hisList.toString())
                 binding.rvHistoryPage.adapter?.notifyItemRemoved(position)
                 reloadPage()
             }

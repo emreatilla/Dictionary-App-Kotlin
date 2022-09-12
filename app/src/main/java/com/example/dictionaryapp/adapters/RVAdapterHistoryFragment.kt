@@ -59,14 +59,6 @@ class RVAdapterHistoryFragment (private val mContext: Context, private var histo
 
         holder.textViewDefinition.text = history.definition
 
-        /*
-        if (history.definition.length > 55) {
-            holder.textViewDefinition.text = history.definition.take(53) + "..."
-        }
-        else {
-            holder.textViewDefinition.text = history.definition
-        }
-         */
 
         holder.imageViewBookmark.setOnClickListener {
             if (FavoritesDao().isInFavorite(dbhf, history.word) == 1) {
@@ -79,8 +71,6 @@ class RVAdapterHistoryFragment (private val mContext: Context, private var histo
                 HistoriesDao().addToFavorites(dbh, history.word)
                 FavoritesDao().addFavorites(dbhf, dbh, history.word)
             }
-            // HistoriesDao().addToFavorites(dbh, history.word)
-            // Toast.makeText(mContext, "${history.word} bookmark clicked", Toast.LENGTH_SHORT).show()
         }
 
         holder.linearLayoutDesign.setOnClickListener { listener(history.word) }

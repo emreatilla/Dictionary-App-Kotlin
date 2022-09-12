@@ -2,7 +2,6 @@ package com.example.dictionaryapp.adapters
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -59,15 +58,6 @@ class RVAdapterFavoritesFragment (private val mContext: Context, private var his
 
         holder.textViewDefinition.text = history.definition
 
-        /*
-        if (history.definition.length > 55) {
-            holder.textViewDefinition.text = history.definition.take(53) + "..."
-        }
-        else {
-            holder.textViewDefinition.text = history.definition
-        }
-         */
-
         holder.imageViewBookmark.setOnClickListener {
             HistoriesDao().removeFavorites(dbh, history.word)
             FavoritesDao().deleteFavorites(dbhf, history.word)
@@ -75,9 +65,6 @@ class RVAdapterFavoritesFragment (private val mContext: Context, private var his
             notifyItemRemoved(position)
             historyList = FavoritesDao().getFavorites(dbhf)
             notifyItemRangeChanged(position, historyList.size)
-            Log.e("list", historyList.toString())
-            // HistoriesDao().addToFavorites(dbh, history.word)
-            // Toast.makeText(mContext, "${history.word} bookmark clicked", Toast.LENGTH_SHORT).show()
             it.findNavController().popBackStack(R.id.favoritesFragment,true)
             it.findNavController().navigate(R.id.favoritesFragment)
         }
