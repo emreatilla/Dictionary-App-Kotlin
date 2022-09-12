@@ -1,4 +1,4 @@
-package com.example.dictionaryapp.view
+package com.example.dictionaryapp.other
 
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView

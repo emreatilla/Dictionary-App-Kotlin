@@ -1,4 +1,4 @@
-package com.example.dictionaryapp.view.db_favorites
+package com.example.dictionaryapp.db.db_favorites
 
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase

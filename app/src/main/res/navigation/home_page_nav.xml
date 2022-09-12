@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/homePageFragment"
-        android:name="com.example.dictionaryapp.view.fragments.HomePageFragment"
+        android:name="com.example.dictionaryapp.fragments.HomePageFragment"
         android:label="HomePageFragment" >
         <action
             android:id="@+id/action_homePageFragment_to_searchPage"
@@ -29,7 +29,7 @@
     </fragment>
     <fragment
         android:id="@+id/favoritesFragment"
-        android:name="com.example.dictionaryapp.view.fragments.FavoritesFragment"
+        android:name="com.example.dictionaryapp.fragments.FavoritesFragment"
         android:label="fragment_favorites"
         tools:layout="@layout/fragment_favorites" >
         <action
@@ -38,7 +38,7 @@
     </fragment>
     <fragment
         android:id="@+id/historyFragment"
-        android:name="com.example.dictionaryapp.view.fragments.HistoryFragment"
+        android:name="com.example.dictionaryapp.fragments.HistoryFragment"
         android:label="fragment_history"
         tools:layout="@layout/fragment_history" >
         <action

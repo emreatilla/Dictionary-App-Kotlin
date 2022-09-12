@@ -1,4 +1,4 @@
-package com.example.dictionaryapp.view.dialogs
+package com.example.dictionaryapp.dialogs
 
 import android.app.Dialog
 import android.graphics.Color
@@ -9,8 +9,8 @@ import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.dictionaryapp.R
 import com.example.dictionaryapp.databinding.FragmentCustomOneDialogBinding
-import com.example.dictionaryapp.view.db_history.DatabaseHelper
-import com.example.dictionaryapp.view.db_history.HistoriesDao
+import com.example.dictionaryapp.db.db_history.DatabaseHelper
+import com.example.dictionaryapp.db.db_history.HistoriesDao
 import com.example.dictionaryapp.viewmodel.SharedViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 

@@ -1,4 +1,4 @@
-package com.example.dictionaryapp.view
+package com.example.dictionaryapp.other
 
 open class SingleLiveEvent<out T>(private val content: T) {
 

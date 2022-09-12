@@ -6,10 +6,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.dictionaryapp.model.DictionaryModel
 import com.example.dictionaryapp.service.DictionaryAPIService
-import com.example.dictionaryapp.view.SingleLiveEvent
+import com.example.dictionaryapp.other.SingleLiveEvent
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.observers.DisposableSingleObserver
 import io.reactivex.schedulers.Schedulers
 
 class MainViewModelDailyWord: ViewModel() {

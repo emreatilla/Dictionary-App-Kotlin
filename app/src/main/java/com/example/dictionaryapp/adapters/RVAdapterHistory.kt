@@ -1,4 +1,4 @@
-package com.example.dictionaryapp.view.adapters
+package com.example.dictionaryapp.adapters
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -11,10 +11,9 @@ import android.widget.TextView
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.dictionaryapp.R
-import com.example.dictionaryapp.view.db_favorites.FavoritesDao
-import com.example.dictionaryapp.view.db_history.DatabaseHelper
-import com.example.dictionaryapp.view.db_history.Histories
-import com.example.dictionaryapp.view.db_history.HistoriesDao
+import com.example.dictionaryapp.db.db_history.DatabaseHelper
+import com.example.dictionaryapp.db.db_history.Histories
+import com.example.dictionaryapp.db.db_history.HistoriesDao
 
 
 class RVAdapterHistory (private val mContext: Context, private var historyList:List<Histories>, val listener: (String) -> Unit) : RecyclerView.Adapter<RVAdapterHistory.CardDesignObjectsHolder>() {

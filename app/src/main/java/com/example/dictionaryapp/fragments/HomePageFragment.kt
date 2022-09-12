@@ -1,4 +1,4 @@
-package com.example.dictionaryapp.view.fragments
+package com.example.dictionaryapp.fragments
 
 import android.annotation.SuppressLint
 import android.content.ClipData
@@ -8,13 +8,11 @@ import android.content.Intent
 import android.media.AudioManager
 import android.media.MediaPlayer
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.RelativeLayout
 import android.widget.SearchView
-import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
@@ -24,16 +22,16 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.dictionaryapp.R
 import com.example.dictionaryapp.databinding.FragmentHomePageBinding
-import com.example.dictionaryapp.view.MyToast
-import com.example.dictionaryapp.view.adapters.RVAdapter
-import com.example.dictionaryapp.view.adapters.RVAdapterFavorites
-import com.example.dictionaryapp.view.adapters.RVAdapterHistory
-import com.example.dictionaryapp.view.db_favorites.DatabaseHelperFavorites
-import com.example.dictionaryapp.view.db_favorites.Favorites
-import com.example.dictionaryapp.view.db_favorites.FavoritesDao
-import com.example.dictionaryapp.view.db_history.DatabaseHelper
-import com.example.dictionaryapp.view.db_history.Histories
-import com.example.dictionaryapp.view.db_history.HistoriesDao
+import com.example.dictionaryapp.other.MyToast
+import com.example.dictionaryapp.adapters.RVAdapter
+import com.example.dictionaryapp.adapters.RVAdapterFavorites
+import com.example.dictionaryapp.adapters.RVAdapterHistory
+import com.example.dictionaryapp.db.db_favorites.DatabaseHelperFavorites
+import com.example.dictionaryapp.db.db_favorites.Favorites
+import com.example.dictionaryapp.db.db_favorites.FavoritesDao
+import com.example.dictionaryapp.db.db_history.DatabaseHelper
+import com.example.dictionaryapp.db.db_history.Histories
+import com.example.dictionaryapp.db.db_history.HistoriesDao
 import com.example.dictionaryapp.viewmodel.MainViewModel
 import com.example.dictionaryapp.viewmodel.MainViewModelDailyWord
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -57,7 +55,6 @@ class HomePageFragment : Fragment() {
     private lateinit var dbh: DatabaseHelper
     private lateinit var dbhf: DatabaseHelperFavorites
     private lateinit var hisList: ArrayList<Histories>
-    // private lateinit var favList: ArrayList<Histories>
     private lateinit var favFavList: ArrayList<Favorites>
 
     private var word: String = ""
@@ -83,19 +80,6 @@ class HomePageFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        /*
-        val callback = requireActivity().onBackPressedDispatcher.addCallback(this) {
-            if (binding.llSearch.visibility == View.VISIBLE) {
-                binding.llSearch.visibility = View.GONE
-                binding.svHome.visibility = View.VISIBLE
-            } else {
-                val activity = MainActivity()
-                finishAffinity(activity)
-                exitProcess(0);
-                // Toast.makeText(requireContext(), "back tıklandı", Toast.LENGTH_SHORT).show()
-            }
-        }
-         */
         _binding = FragmentHomePageBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -113,7 +97,6 @@ class HomePageFragment : Fragment() {
         val hayn = arguments?.getString("word")
         if (hayn != null) {
             setValues(hayn)
-            // arguments?.getString("word")?.let { Log.e("getarg", it) }
         }
 
 
@@ -125,10 +108,12 @@ class HomePageFragment : Fragment() {
             if (word != dailyWord) {
                 viewModelDailyWord.refreshData(dailyWord)
                 getLiveDataDailyWord()
+
+                if (dailyAudio == "") {
+                    binding.cvListenDailyWord.visibility = View.GONE
+                }
             }
         }
-        Log.e("hayn", binding.tvDailyWord.text.toString())
-        Log.e("hayn", "haynnn")
         binding.tvDateTime.text = getCurrentDate()
         binding.tvDailyWord.text = dailyWord
         binding.tvDailyWord.setOnClickListener {
@@ -140,7 +125,6 @@ class HomePageFragment : Fragment() {
         binding.cvShareDailyWord.setOnClickListener {
             shareWord()
         }
-        // Log.e("resultt", FavoritesDao().isInFavorite(dbhf, "yes").toString())
         if (FavoritesDao().isInFavorite(dbhf, dailyWord) == 1) {
             binding.ivSaveDailyWord.setImageResource(R.drawable.ic_baseline_bookmark_24)
             binding.tvSaveDailyWord.text = "Unsave"
@@ -161,17 +145,13 @@ class HomePageFragment : Fragment() {
                     val word = getString("WORD", "")
                     val definition = getString("DEFINITION", "")
                     val speech = getString("SPEECH", "")
-
-
                     FavoritesDao().addDailyWordFavorites(dbhf, word.toString(), definition.toString(), speech.toString())
                 }
                 binding.ivSaveDailyWord.setImageResource(R.drawable.ic_baseline_bookmark_24)
                 binding.tvSaveDailyWord.text = "Unsave"
             }
         }
-        if (dailyAudio == "") {
-            binding.cvListenDailyWord.visibility = View.GONE
-        }
+
         binding.cvListenDailyWord.setOnClickListener {
             mediaPlayer = MediaPlayer()
             mediaPlayer!!.setAudioStreamType(AudioManager.STREAM_MUSIC)
@@ -209,7 +189,6 @@ class HomePageFragment : Fragment() {
 
         }
 
-        // HistoriesDao().addWord(dbh, "\"Hi\"", "\"Hİİ\"", 0)
         hisList = HistoriesDao().getHistory(dbh)
         adapterHistory = RVAdapterHistory(requireContext(), hisList) { w ->
             setValues(w)
@@ -217,7 +196,6 @@ class HomePageFragment : Fragment() {
         binding.rvHistory.adapter = adapterHistory
 
 
-        // favList = HistoriesDao().getTenFavorites(dbh)
         favFavList = FavoritesDao().getTenFavorites(dbhf)
         adapterFavorites = RVAdapterFavorites(requireContext(), favFavList) { w ->
             setValues(w)
@@ -232,8 +210,6 @@ class HomePageFragment : Fragment() {
         }
 
 
-        // Log.e("DB", hisList.toString())
-
 
         requireActivity().onBackPressedDispatcher.addCallback(
             viewLifecycleOwner,
@@ -246,26 +222,18 @@ class HomePageFragment : Fragment() {
 
                         reloadPage()
                     } else {
-                        /*
-                        AlertDialog.Builder(requireContext()).setMessage("Are you sure ?")
-                            .setPositiveButton("Yes") {_, _ -> activity?.finish()}
-                            .setNegativeButton("No") {_, _ -> }
-                            .show()
-                         */
                         val dialog = BottomSheetDialog(
                             requireContext(),
                             R.style.BottomSheetDialog
-                        ) // Style here
+                        )
                         dialog.setContentView(R.layout.sample_dialog_one)
                         val btnExit = dialog.findViewById<RelativeLayout>(R.id.rl_exit)
                         val btnDelete = dialog.findViewById<RelativeLayout>(R.id.rl_cancel)
                         btnExit?.setOnClickListener {
                             activity?.finish()
-                            // Toast.makeText(requireContext(), "Clicked on Exit", Toast.LENGTH_SHORT).show()
                         }
                         btnDelete?.setOnClickListener {
                             dialog.dismiss()
-                            // Toast.makeText(requireContext(), "Clicked on Cancel", Toast.LENGTH_SHORT).show()
                         }
                         dialog.show()
                     }
@@ -274,9 +242,8 @@ class HomePageFragment : Fragment() {
             })
 
         binding.tvFavoritesSeeAll.setOnClickListener {
-            // findNavController().navigate(R.id.action_homePageFragment_to_favoritesFragment)
+            TODO()
         }
-
 
 
         binding.btnBack.setOnClickListener {
@@ -288,15 +255,6 @@ class HomePageFragment : Fragment() {
             binding.pBar.visibility = View.GONE
 
             reloadPage()
-
-
-            /*
-            if (mediaPlayer!!.isPlaying) {
-                mediaPlayer!!.stop()
-                mediaPlayer!!.reset()
-                mediaPlayer!!.release()
-            }
-             */
         }
 
         binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
@@ -355,13 +313,6 @@ class HomePageFragment : Fragment() {
         val myClipboard =
             getSystemService(requireContext(), ClipboardManager::class.java) as ClipboardManager
         val clip: ClipData = ClipData.newPlainText("simple text", word)
-        /*
-        Toast.makeText(
-            requireContext(),
-            "Word \"$word\" is copied to the clipboard.",
-            Toast.LENGTH_SHORT
-        ).show()
-         */
         MyToast.show(requireContext(), "Word \"$word\" is copied to the clipboard.", true, 0)
         myClipboard.setPrimaryClip(clip)
     }
@@ -430,32 +381,6 @@ class HomePageFragment : Fragment() {
         return sdf.format(Date())
     }
 
-    /*
-    @SuppressLint("SetTextI18n")
-    fun getAudio() {
-        viewmodel.dictionary_data.observe(viewLifecycleOwner, Observer { data ->
-            // viewmodel.dictionary_data.value = null
-            data?.takeIf { userVisibleHint }?.getContentIfNotHandled()?.let { it ->
-                binding.cvListenDailyWord.visibility = View.GONE
-
-                // bazen audio başta yada sonda olabiliyor
-                for (i in it[0].phonetics) {
-                    dailyAudio = i.audio
-                    Log.e("audio", dailyAudio)
-                    if (dailyAudio != "") {
-                        binding.cvListenDailyWord.visibility = View.VISIBLE
-                        break
-                    } else {
-                        continue
-                    }
-
-                    // audio = it[0].phonetics[it[0].phonetics.lastIndex].audio
-                }
-            }
-        })
-    }
-     */
-
     @SuppressLint("CommitPrefEdits")
     fun getLiveDataDailyWord() {
         viewModelDailyWord.dictionary_data.observe(viewLifecycleOwner, Observer { data ->
@@ -469,15 +394,12 @@ class HomePageFragment : Fragment() {
                 // bazen audio başta yada sonda olabiliyor
                 for (i in it[0].phonetics) {
                     dailyAudio = i.audio
-                    Log.e("audio", dailyAudio)
                     if (dailyAudio != "") {
                         binding.cvListenDailyWord.visibility = View.VISIBLE
                         break
                     } else {
                         continue
                     }
-
-                    // audio = it[0].phonetics[it[0].phonetics.lastIndex].audio
                 }
                 val prefs = requireActivity().getSharedPreferences("pref", Context.MODE_PRIVATE)
                 val editor = prefs.edit()
@@ -497,7 +419,6 @@ class HomePageFragment : Fragment() {
     @SuppressLint("SetTextI18n", "InflateParams")
     fun getLiveData() {
         viewmodel.dictionary_data.observe(viewLifecycleOwner, Observer { data ->
-            // viewmodel.dictionary_data.value = null
             data?.takeIf { userVisibleHint }?.getContentIfNotHandled()?.let { it ->
                 word = it[0].word
                 def = it[0].meanings[0].definitions[0].definition
@@ -508,7 +429,6 @@ class HomePageFragment : Fragment() {
                 // bazen audio başta yada sonda olabiliyor
                 for (i in it[0].phonetics) {
                     audio = i.audio
-                    Log.e("audio", audio)
                     if (audio != "") {
                         binding.cvListen.visibility = View.VISIBLE
                         break
@@ -516,9 +436,7 @@ class HomePageFragment : Fragment() {
                         continue
                     }
 
-                    // audio = it[0].phonetics[it[0].phonetics.lastIndex].audio
                 }
-                // Log.e("addWord", "word : $word def : $def")
 
                 // History kısmında kelime eğer bulunuyorsa başa ekleme
                 try {
@@ -528,7 +446,6 @@ class HomePageFragment : Fragment() {
                     HistoriesDao().deleteWord(dbh, word)
                     HistoriesDao().addWord(dbh, "\"${word}\"", "\"${def}\"", "\"${speech}\"", isF)
                 }
-                // HistoriesDao().getLastTenHistory(dbh)
 
                 hisList = HistoriesDao().getHistory(dbh)
                 adapterHistory = RVAdapterHistory(requireContext(), hisList) { w ->
@@ -536,7 +453,6 @@ class HomePageFragment : Fragment() {
                 }
                 binding.rvHistory.adapter = adapterHistory
 
-                // favList = HistoriesDao().getTenFavorites(dbh)
                 favFavList = FavoritesDao().getTenFavorites(dbhf)
                 adapterFavorites = RVAdapterFavorites(requireContext(), favFavList) { w ->
                     setValues(w)
@@ -546,25 +462,10 @@ class HomePageFragment : Fragment() {
 
                 for (i in 0 until it.size) {
                     val dictionaryModelItem = it[i]
-                    val meanings = dictionaryModelItem.meanings
-                    // Log.e("DMI", dictionaryModelItem.toString())
 
                     adapter = RVAdapter(requireContext(), it)
                     binding.rvWord.adapter = adapter
 
-                    for (j in meanings.indices) {
-                        val meaning = meanings[j]
-                        val definitions = meaning.definitions
-                        // Log.e("MEANING", meaning.toString())
-
-                        // adapter = RVAdapter(this, definitions)
-                        // binding.rvWord.adapter = adapter
-
-                        for (k in definitions.indices) {
-                            val definition = definitions[k]
-                            // Log.e("DEFINITION", definition.toString())
-                        }
-                    }
                 }
             }
         })
@@ -572,14 +473,6 @@ class HomePageFragment : Fragment() {
         viewmodel.dictionary_error.observe(viewLifecycleOwner, Observer { error ->
             error?.takeIf { userVisibleHint }?.getContentIfNotHandled()?.let {
                 if (it)
-                    /*
-                    Toast(requireContext()).apply{
-                        duration = Toast.LENGTH_LONG
-                        view = layoutInflater.inflate(R.layout.custom_toast_message, null)
-                    }
-                        .show()
-                     */
-
                     MyToast.show(requireContext(), "You gave invalid word ! ", true, 1)
                 binding.searchView.visibility = View.VISIBLE
                 binding.pBar.visibility = View.GONE
@@ -600,14 +493,8 @@ class HomePageFragment : Fragment() {
                     binding.rvWord.layoutManager =
                         StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
                     navBar.visibility = View.GONE
-
-                    // Log.e("addWord", "word : $word def : $def")
-                    // HistoriesDao().addWord(dbh, "\"${word}\"", "\"${def}\"", 0)
-                    // HistoriesDao().getHistory(dbh)
                 }
             }
         })
-
-
     }
 }

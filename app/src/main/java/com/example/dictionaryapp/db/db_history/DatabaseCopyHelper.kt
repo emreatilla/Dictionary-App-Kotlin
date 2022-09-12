@@ -1,4 +1,4 @@
-package com.example.dictionaryapp.view.db_history
+package com.example.dictionaryapp.db.db_history
 
 import android.content.Context
 import android.database.SQLException

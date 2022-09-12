@@ -1,7 +1,6 @@
-package com.example.dictionaryapp.view.fragments
+package com.example.dictionaryapp.fragments
 
 import android.annotation.SuppressLint
-import android.app.AlertDialog
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -14,13 +13,14 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.example.dictionaryapp.R
 import com.example.dictionaryapp.databinding.FragmentHistoryBinding
-import com.example.dictionaryapp.view.SwipeToDeleteCallback
-import com.example.dictionaryapp.view.adapters.RVAdapterHistoryFragment
-import com.example.dictionaryapp.view.db_history.DatabaseHelper
-import com.example.dictionaryapp.view.db_history.Histories
-import com.example.dictionaryapp.view.db_history.HistoriesDao
-import com.example.dictionaryapp.view.dialogs.CustomOneDialog
+import com.example.dictionaryapp.other.SwipeToDeleteCallback
+import com.example.dictionaryapp.adapters.RVAdapterHistoryFragment
+import com.example.dictionaryapp.db.db_history.DatabaseHelper
+import com.example.dictionaryapp.db.db_history.Histories
+import com.example.dictionaryapp.db.db_history.HistoriesDao
+import com.example.dictionaryapp.dialogs.CustomOneDialog
 import com.example.dictionaryapp.viewmodel.SharedViewModel
 
 
@@ -113,7 +113,7 @@ class HistoryFragment : Fragment() {
         adapterHistory = RVAdapterHistoryFragment(requireContext(), hisList) {
             val bundle = Bundle()
             bundle.putString("word", it)
-            findNavController().navigate(com.example.dictionaryapp.R.id.action_historyFragment_to_homePageFragment, bundle)
+            findNavController().navigate(R.id.action_historyFragment_to_homePageFragment, bundle)
         }
         binding.rvHistoryPage.adapter = adapterHistory
         binding.rvHistoryPage.setHasFixedSize(true)

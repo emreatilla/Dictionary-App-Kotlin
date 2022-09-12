@@ -2,18 +2,12 @@ package com.example.dictionaryapp.view
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.dictionaryapp.R
 import com.example.dictionaryapp.databinding.ActivityMainBinding
-import com.example.dictionaryapp.view.adapters.RVAdapter
-import com.example.dictionaryapp.view.adapters.RVAdapterMeaning
-import com.example.dictionaryapp.view.db_history.DatabaseCopyHelper
-import com.example.dictionaryapp.viewmodel.MainViewModel
+import com.example.dictionaryapp.db.db_history.DatabaseCopyHelper
 import java.lang.Exception
 
 class MainActivity : AppCompatActivity() {

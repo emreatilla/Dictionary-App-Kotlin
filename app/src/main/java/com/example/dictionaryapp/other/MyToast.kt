@@ -1,4 +1,4 @@
-package com.example.dictionaryapp.view
+package com.example.dictionaryapp.other
 
 import android.annotation.SuppressLint
 import com.example.dictionaryapp.R

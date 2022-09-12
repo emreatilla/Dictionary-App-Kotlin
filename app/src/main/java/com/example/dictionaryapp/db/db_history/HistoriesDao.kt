@@ -1,11 +1,11 @@
-package com.example.dictionaryapp.view.db_history
+package com.example.dictionaryapp.db.db_history
 
 import android.annotation.SuppressLint
 
 class HistoriesDao {
 
     @SuppressLint("Recycle", "Range")
-    fun getHistory(dbh:DatabaseHelper): ArrayList<Histories> {
+    fun getHistory(dbh: DatabaseHelper): ArrayList<Histories> {
         val historyList = ArrayList<Histories>()
         val db = dbh.writableDatabase
         val c = db.rawQuery("SELECT * FROM histories ORDER BY \"word_id\" DESC", null)
@@ -19,7 +19,7 @@ class HistoriesDao {
     }
 
     @SuppressLint("Range", "Recycle")
-    fun getFavorites(dbh:DatabaseHelper): ArrayList<Histories> {
+    fun getFavorites(dbh: DatabaseHelper): ArrayList<Histories> {
         val historyList = ArrayList<Histories>()
         val db = dbh.writableDatabase
         val c = db.rawQuery("SELECT * FROM histories WHERE isFlagged = 1 ORDER BY \"word_id\" DESC", null)

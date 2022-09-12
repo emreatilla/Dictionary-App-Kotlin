@@ -1,8 +1,8 @@
-package com.example.dictionaryapp.view.db_favorites
+package com.example.dictionaryapp.db.db_favorites
 
 import android.annotation.SuppressLint
 import android.util.Log
-import com.example.dictionaryapp.view.db_history.DatabaseHelper
+import com.example.dictionaryapp.db.db_history.DatabaseHelper
 
 class FavoritesDao {
 
@@ -52,7 +52,7 @@ class FavoritesDao {
     }
 
     @SuppressLint("Range", "Recycle")
-    fun getTenFavorites(dbh:DatabaseHelperFavorites): ArrayList<Favorites> {
+    fun getTenFavorites(dbh: DatabaseHelperFavorites): ArrayList<Favorites> {
         val favoritesList = ArrayList<Favorites>()
         val db = dbh.writableDatabase
         val c = db.rawQuery("SELECT * FROM favorites ORDER BY \"word_id\" DESC LIMIT 10", null)
@@ -66,7 +66,7 @@ class FavoritesDao {
     }
 
     @SuppressLint("Range", "Recycle")
-    fun getFavorites(dbh:DatabaseHelperFavorites): ArrayList<Favorites> {
+    fun getFavorites(dbh: DatabaseHelperFavorites): ArrayList<Favorites> {
         val favoritesList = ArrayList<Favorites>()
         val db = dbh.writableDatabase
         val c = db.rawQuery("SELECT * FROM favorites ORDER BY \"word_id\" DESC", null)

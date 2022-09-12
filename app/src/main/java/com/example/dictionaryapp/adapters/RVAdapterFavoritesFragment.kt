@@ -1,4 +1,4 @@
-package com.example.dictionaryapp.view.adapters
+package com.example.dictionaryapp.adapters
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -12,14 +12,13 @@ import android.widget.TextView
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.dictionaryapp.R
-import com.example.dictionaryapp.view.db_favorites.DatabaseHelperFavorites
-import com.example.dictionaryapp.view.db_favorites.Favorites
-import com.example.dictionaryapp.view.db_favorites.FavoritesDao
-import com.example.dictionaryapp.view.db_history.DatabaseHelper
-import com.example.dictionaryapp.view.db_history.Histories
-import com.example.dictionaryapp.view.db_history.HistoriesDao
+import com.example.dictionaryapp.db.db_favorites.DatabaseHelperFavorites
+import com.example.dictionaryapp.db.db_favorites.Favorites
+import com.example.dictionaryapp.db.db_favorites.FavoritesDao
+import com.example.dictionaryapp.db.db_history.DatabaseHelper
+import com.example.dictionaryapp.db.db_history.HistoriesDao
 
-class RVAdapterFavorites (private val mContext: Context, private var favList:List<Favorites>, val listener: (String) -> Unit) : RecyclerView.Adapter<RVAdapterFavorites.CardDesignObjectsHolder>() {
+class RVAdapterFavoritesFragment (private val mContext: Context, private var historyList:List<Favorites>, val listener: (String) -> Unit) : RecyclerView.Adapter<RVAdapterFavoritesFragment.CardDesignObjectsHolder>() {
 
     private lateinit var dbh: DatabaseHelper
     private lateinit var dbhf: DatabaseHelperFavorites
@@ -36,18 +35,18 @@ class RVAdapterFavorites (private val mContext: Context, private var favList:Lis
             textViewSpeech = view.findViewById(R.id.tv_speech)
             textViewDefinition = view.findViewById(R.id.tv_definition)
             imageViewBookmark = view.findViewById(R.id.iv_bookmark)
-            linearLayoutDesign = view.findViewById(R.id.ll_last_searches_design)
+            linearLayoutDesign = view.findViewById(R.id.ll_history_design)
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CardDesignObjectsHolder {
-        val design = LayoutInflater.from(mContext).inflate(R.layout.favorites_design, parent, false)
+        val design = LayoutInflater.from(mContext).inflate(R.layout.history_design, parent, false)
         return CardDesignObjectsHolder(design)
     }
 
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: CardDesignObjectsHolder, position: Int) {
-        val history = favList[position]
+        val history = historyList[position]
 
         dbh = DatabaseHelper(mContext)
         dbhf = DatabaseHelperFavorites(mContext)
@@ -58,26 +57,29 @@ class RVAdapterFavorites (private val mContext: Context, private var favList:Lis
 
         holder.textViewSpeech.text = "[" + history.speech + "] "
 
+        holder.textViewDefinition.text = history.definition
+
+        /*
         if (history.definition.length > 55) {
             holder.textViewDefinition.text = history.definition.take(53) + "..."
         }
         else {
             holder.textViewDefinition.text = history.definition
         }
+         */
 
         holder.imageViewBookmark.setOnClickListener {
             HistoriesDao().removeFavorites(dbh, history.word)
             FavoritesDao().deleteFavorites(dbhf, history.word)
             holder.imageViewBookmark.setImageResource(R.drawable.ic_bookmark)
             notifyItemRemoved(position)
-            favList = FavoritesDao().getFavorites(dbhf)
-            notifyItemRangeChanged(position, favList.size)
-            Log.e("list", favList.toString())
+            historyList = FavoritesDao().getFavorites(dbhf)
+            notifyItemRangeChanged(position, historyList.size)
+            Log.e("list", historyList.toString())
             // HistoriesDao().addToFavorites(dbh, history.word)
             // Toast.makeText(mContext, "${history.word} bookmark clicked", Toast.LENGTH_SHORT).show()
-            // This method refreshes the fragment
-            it.findNavController().popBackStack(R.id.homePageFragment,true)
-            it.findNavController().navigate(R.id.homePageFragment)
+            it.findNavController().popBackStack(R.id.favoritesFragment,true)
+            it.findNavController().navigate(R.id.favoritesFragment)
         }
 
         holder.linearLayoutDesign.setOnClickListener { listener(history.word) }
@@ -85,6 +87,6 @@ class RVAdapterFavorites (private val mContext: Context, private var favList:Lis
     }
 
     override fun getItemCount(): Int {
-        return favList.size
+        return historyList.size
     }
 }

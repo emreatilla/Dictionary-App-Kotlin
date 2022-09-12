@@ -1,4 +1,4 @@
-package com.example.dictionaryapp.view.fragments
+package com.example.dictionaryapp.fragments
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -9,12 +9,12 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.dictionaryapp.R
 import com.example.dictionaryapp.databinding.FragmentFavoritesBinding
-import com.example.dictionaryapp.view.adapters.RVAdapterFavoritesFragment
-import com.example.dictionaryapp.view.db_favorites.DatabaseHelperFavorites
-import com.example.dictionaryapp.view.db_favorites.Favorites
-import com.example.dictionaryapp.view.db_favorites.FavoritesDao
-import com.example.dictionaryapp.view.db_history.DatabaseHelper
-import com.example.dictionaryapp.view.db_history.Histories
+import com.example.dictionaryapp.adapters.RVAdapterFavoritesFragment
+import com.example.dictionaryapp.db.db_favorites.DatabaseHelperFavorites
+import com.example.dictionaryapp.db.db_favorites.Favorites
+import com.example.dictionaryapp.db.db_favorites.FavoritesDao
+import com.example.dictionaryapp.db.db_history.DatabaseHelper
+import com.example.dictionaryapp.db.db_history.Histories
 
 class FavoritesFragment : Fragment() {
     private lateinit var adapterHistory: RVAdapterFavoritesFragment
